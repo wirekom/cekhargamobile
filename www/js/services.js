@@ -4,6 +4,7 @@ angular.module('starter.services', [])
 
   var _sms_server = '+14077925761';
   var _api_server = 'http://crosscode.tk/dimana/api';
+  var _userinfo = {};
 
   var _items = [
     {code: 'BAWANG_MERAH', name: 'Bawang merah'},
@@ -18,6 +19,9 @@ angular.module('starter.services', [])
   ]
 
   return {
+    userInfo: function() {
+      return _userinfo;
+    },
     items: function() {
       return _items;
     },
@@ -43,6 +47,10 @@ angular.module('starter.services', [])
         return true;
       }
       return false;
+    },
+    updateUserInfo: function(userInfo) {
+      _userinfo = userInfo;
+      return true;
     }
   }
 

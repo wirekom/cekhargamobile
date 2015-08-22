@@ -21,14 +21,16 @@ angular.module('starter.controllers', ['ngCordova'])
 //   $scope.chat = Chats.get($stateParams.chatId);
 // })
 
-.controller('AccountCtrl', function($scope, $ionicModal, Commons) {
-  $scope.registration = {
-    mobile: '+6281311525264'
-  };
+.controller('AccountCtrl', function($scope, $ionicModal, $ionicLoading, Commons) {
+  $scope.registration = {};
   $scope.config = {
     SMSServer: Commons.SMSServer(),
     APIServer: Commons.APIServer()
   };
+
+  $scope.init = function() {
+    $scope.registration = Commons.userInfo();
+  }
 
   $scope.$on('$ionicView.beforeLeave', function() {
     if ($scope.config.SMSServer != Commons.SMSServer() || $scope.config.APIServer != Commons.APIServer()) {
@@ -55,6 +57,7 @@ angular.module('starter.controllers', ['ngCordova'])
  };
 
  $scope.register = function() {
+   Commons.updateUserInfo($scope.registration);
    $scope.modal.hide();
  };
 
@@ -180,7 +183,7 @@ angular.module('starter.controllers', ['ngCordova'])
       if ('WEB' == $scope.source) {
         var content = {barang: $scope.selection.item, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng()};
         alert(content);
-        $ionicLoading.show();        
+        $ionicLoading.show();
         Webservice.example(
           content,
           function(res) {
