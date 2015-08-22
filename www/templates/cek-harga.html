@@ -1,0 +1,27 @@
+<ion-view view-title="Cek Harga" ng-init="init()">
+  <ion-content>
+    <div class="list">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Barang</span>
+        <select ng-model="selection.item">
+          <option ng-repeat="opt in items" value="{{opt.code}}">{{opt.name}}</option>
+        </select>
+      </label>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Penjual</span>
+        <select ng-model="selection.seller">
+          <option ng-repeat="opt in sellers" value="{{opt.code}}">{{opt.name}}</option>
+        </select>
+      </label>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="button button-block button-positive icon-left ion-earth" ng-click="getPrice('WEB')">Cek Web</button>
+      </div>
+      <div class="col">
+        <button class="button button-block button-balanced icon-left ion-chatbox-working" ng-click="getPrice('SMS')">Cek SMS</button>
+      </div>
+    </div>
+    <div id="map" data-tap-disabled="true"></div>
+  </ion-content>
+</ion-view>
