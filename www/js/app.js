@@ -101,6 +101,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
+  .state('tab.jual', {
+    url: '/jual',
+    views: {
+      'tab-jual': {
+        templateUrl: 'templates/tab-jual.html',
+        controller: 'JualCtrl'
+      }
+    }
+  })
+
   ;
 
   // if none of the above states are matched, use this as the fallback
