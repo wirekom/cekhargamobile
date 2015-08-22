@@ -80,6 +80,7 @@ angular.module('starter.controllers', ['ngCordova'])
     radius: 0
   };
   $scope.currentPosition = null;
+  $scope.map = null;
 
   $scope.onPositionFound = function(position) {
     var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -112,7 +113,7 @@ angular.module('starter.controllers', ['ngCordova'])
     }
 
     $scope.init = function() {
-      $scope.map = new google.maps.Map(document.getElementById("map"), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
+      $scope.map = new google.maps.Map(document.getElementById('map'), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
       $scope.getUserCurrentLocation(
         {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
       );
@@ -121,6 +122,10 @@ angular.module('starter.controllers', ['ngCordova'])
     // in case position was not found, try it again on view re-enter
     $scope.$on('$ionicView.enter', function() {
       $scope.init();
+    });
+
+    $scope.$on('$ionicView.leave', function() {
+      $scope.map = null;
     });
 
     $scope.getPrice = function(source) {
@@ -179,6 +184,8 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.source = null;
     $scope.currentPosition = null;
     $scope.markers = [];
+    $scope.currentMarker = null;
+    $scope.map = null;
 
     $scope.sendPrice = function(source) {
       $scope.source = source;
@@ -197,6 +204,12 @@ angular.module('starter.controllers', ['ngCordova'])
         //     $ionicLoading.hide();
         //   }
         // );
+        $scope.addMarkers([
+          {lat:'-6.919120523384683', lng:'107.61046171188354', price:8000, item:'Bawang merah'},
+          {lat:'-6.913709936771518', lng:'107.61099815368652', price:9000, item:'Bawang merah'},
+          {lat:'-6.916521745423941', lng:'107.61863708496094', price:10000, item:'Bawang merah'},
+          {lat:'-6.919397441504497', lng:'107.62271404266357', price:8500, item:'Bawang merah'}
+        ]);
       } else if ('SMS' == $scope.source) {
         var phonenumber = Commons.SMSServer();
         var content = 'POSHARGA,' + $scope.selection.item.toUpperCase() + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
@@ -290,7 +303,7 @@ angular.module('starter.controllers', ['ngCordova'])
           infowindow.open($scope.map,marker);
         });
         $scope.map.setCenter(myLatlng);
-        $scope.markers.push(marker);
+        $scope.currentMarker = marker;
       }
 
       $scope.getUserCurrentLocation = function(options) {
@@ -303,15 +316,16 @@ angular.module('starter.controllers', ['ngCordova'])
         }
 
         $scope.init = function() {
-          $scope.map = new google.maps.Map(document.getElementById("map"), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
+          $scope.map = new google.maps.Map(document.getElementById('map'), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
           $scope.getUserCurrentLocation(
             {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
           );
 
           // on map click
-          google.maps.event.addListener($scope.map, 'click', function(e) {
-            $scope.clearMarkers();
-      			$scope.currentPosition = e.latLng;
+          google.maps.event.addListener($scope.map, 'mousedown', function(e) {
+            $scope.currentMarker.setMap(null);
+      			$scope.currentMarker = null;
+            $scope.currentPosition = e.latLng;
             var marker = new google.maps.Marker({
               position: $scope.currentPosition,
               map: $scope.map,
@@ -320,10 +334,10 @@ angular.module('starter.controllers', ['ngCordova'])
             var infowindow = new google.maps.InfoWindow({
               content: marker.title
             }).open($scope.map, marker);
-            $scope.markers.push(marker);
+            $scope.currentMarker = marker;
       		});
-
         }
+
 
         $scope.clearMarkers = function() {
       		for ( var i = 0; i < $scope.markers.length; i++) {
@@ -332,10 +346,31 @@ angular.module('starter.controllers', ['ngCordova'])
           $scope.markers = [];
       	}
 
+        $scope.addMarkers = function(locations) {
+          $scope.clearMarkers();
+          for (var i=0;i<locations.length;i++) {
+            var marker = new google.maps.Marker({
+              position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
+              map: $scope.map,
+              icon: 'https://maps.google.com/mapfiles/kml/shapes/shopping.png',
+              title: locations[i].item + ' Rp ' + locations[i].price
+            });
+            var infowindow = new google.maps.InfoWindow({
+              content: marker.title
+            }).open($scope.map, marker);
+            $scope.markers.push(marker);
+          }
+        }
+
         // in case position was not found, try it again on view re-enter
         $scope.$on('$ionicView.enter', function() {
           $scope.init();
         });
+
+        $scope.$on('$ionicView.leave', function() {
+          $scope.map = null;
+        });
+
     })
 
     .controller('JualCtrl', function($scope, $ionicLoading, $ionicPlatform, Commons, Webservice) {
@@ -349,6 +384,7 @@ angular.module('starter.controllers', ['ngCordova'])
       };
       $scope.source = null;
       $scope.currentPosition = null;
+      $scope.map = null;
 
       $scope.sendPrice = function(source) {
           $scope.source = source;
@@ -473,7 +509,8 @@ angular.module('starter.controllers', ['ngCordova'])
           }
 
           $scope.init = function() {
-            $scope.map = new google.maps.Map(document.getElementById("map"), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
+
+            $scope.map = new google.maps.Map(document.getElementById('map'), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
             $scope.getUserCurrentLocation(
               {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
             );
@@ -485,6 +522,9 @@ angular.module('starter.controllers', ['ngCordova'])
             $scope.init();
           });
 
+          $scope.$on('$ionicView.leave', function() {
+            $scope.map = null;
+          });
 
       })
 
