@@ -1,4 +1,4 @@
-<ion-view view-title="Jual Komoditas">
+<ion-view view-title="Jual Komoditas" ng-init="init()">
   <ion-content>
     <div class="list">
       <label class="item item-input item-stacked-label">
@@ -18,10 +18,10 @@
     </div>
     <div class="row">
       <div class="col">
-        <button class="button button-block button-positive icon-left ion-earth" ng-disabled="!currentPosition || !loggedIn" ng-click="sendPrice('WEB')">Kirim Web</button>
+        <button class="button button-block button-positive icon-left ion-earth" ng-disabled="!currentPosition || !loggedIn || !selection.item || !selection.qty || !selection.price" ng-click="sendPrice('WEB')">Kirim Web</button>
       </div>
       <div class="col">
-        <button class="button button-block button-balanced icon-left ion-chatbox-working" ng-disabled="!currentPosition || !loggedIn" ng-click="sendPrice('SMS')">Kirim SMS</button>
+        <button class="button button-block button-balanced icon-left ion-chatbox-working" ng-disabled="!currentPosition || !loggedIn || !selection.item || !selection.qty || !selection.price" ng-click="sendPrice('SMS')">Kirim SMS</button>
       </div>
     </div>
     <div id="map" data-tap-disabled="true"></div>

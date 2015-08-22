@@ -119,9 +119,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     // in case position was not found, try it again on view re-enter
     $scope.$on('$ionicView.enter', function() {
-      if ($scope.map && !$scope.currentPosition) {
-        $scope.init();
-      }
+      $scope.init();
     });
 
     $scope.getPrice = function(source) {
@@ -181,20 +179,20 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.sendPrice = function(source) {
       $scope.source = source;
       if ('WEB' == $scope.source) {
-        var content = {barang: $scope.selection.item, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng()};
-        alert(content);
-        $ionicLoading.show();
-        Webservice.example(
-          content,
-          function(res) {
-            alert(JSON.stringify(res));
-            $ionicLoading.hide();
-          },
-          function(err) {
-            alert(err);
-            $ionicLoading.hide();
-          }
-        );
+        var content = {barang: $scope.selection.item, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
+        alert(JSON.stringify(content));
+        // $ionicLoading.show();
+        // Webservice.example(
+        //   content,
+        //   function(res) {
+        //     alert(JSON.stringify(res));
+        //     $ionicLoading.hide();
+        //   },
+        //   function(err) {
+        //     alert(err);
+        //     $ionicLoading.hide();
+        //   }
+        // );
       } else if ('SMS' == $scope.source) {
         var phonenumber = Commons.SMSServer();
         var content = 'POSHARGA,' + $scope.selection.item.toUpperCase() + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
@@ -332,9 +330,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
         // in case position was not found, try it again on view re-enter
         $scope.$on('$ionicView.enter', function() {
-          if ($scope.map && !$scope.currentPosition) {
-            $scope.init();
-          }
+          $scope.init();
         });
     })
 
@@ -349,68 +345,142 @@ angular.module('starter.controllers', ['ngCordova'])
       };
       $scope.source = null;
       $scope.currentPosition = null;
-      $scope.loggedIn = true; // TODO call API
 
       $scope.sendPrice = function(source) {
-        if (source && $scope.selection.item && $scope.selection.seller && $scope.selection.item) {
           $scope.source = source;
-          $ionicLoading.show();
-          var options = {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false};
-          navigator.geolocation.getCurrentPosition(
-            $scope.onPositionFound,
-            function(err) {
-              options.enableHighAccuracy = true; // force native GPS
-              navigator.geolocation.getCurrentPosition(
-                $scope.onPositionFound,
-                $scope.onPositionError,
-                options
-              );
-            },
-            options);
-          }
-        }
-
-        $scope.onPositionFound = function(pos) {
           if ('WEB' == $scope.source) {
-            Webservice.example(
-              {barang: $scope.selection.item, penjual: $scope.selection.seller, harga: $scope.selection.price, lat: pos.coords.latitude, lng: pos.coords.longitude},
-              function(res) {
-                alert(JSON.stringify(res));
-                $ionicLoading.hide();
-              },
-              function(err) {
-                alert(err);
-                $ionicLoading.hide();
-              }
-            );
+            var content = {barang: $scope.selection.item, qty: $scope.selection.qty, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
+            alert(JSON.stringify(content));
+            // $ionicLoading.show();
+            // Webservice.example(
+            //   content,
+            //   function(res) {
+            //     alert(JSON.stringify(res));
+            //     $ionicLoading.hide();
+            //   },
+            //   function(err) {
+            //     alert(err);
+            //     $ionicLoading.hide();
+            //   }
+            //);
           } else if ('SMS' == $scope.source) {
             var phonenumber = Commons.SMSServer();
-            var content = 'POSHARGA ' + $scope.selection.item.toUpperCase() + ' ' + $scope.selection.seller.toUpperCase() + ' ' + $scope.selection.price + ' ' + pos.coords.latitude + ' ' + pos.coords.longitude;
+            var content = 'JUAL,' + $scope.selection.item.toUpperCase() + ',' + $scope.selection.qty + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
             alert(content);
-            $ionicLoading.show();
-            try {
-              $ionicPlatform.ready(function() {
-                $cordovaSms
-                .send(phonenumber, content)
-                .then(function() {
-                  alert('SMS berhasil dikirim')
-                  $ionicLoading.hide();
-                }, function(error) {
-                  alert('SMS gagal dikirim: ' + error);
-                  $ionicLoading.hide();
-                });
-              });
-            } catch(err) {
-              alert(err);
-              $ionicLoading.hide();
-            }
+            // $ionicLoading.show();
+            // try {
+            //   $ionicPlatform.ready(function() {
+            //     $cordovaSms
+            //     .send(phonenumber, content)
+            //     .then(function() {
+            //       alert('SMS berhasil dikirim')
+            //       $ionicLoading.hide();
+            //     }, function(error) {
+            //       alert('SMS gagal dikirim: ' + error);
+            //       $ionicLoading.hide();
+            //     });
+            //   });
+            // } catch(err) {
+            //   alert(err);
+            //   $ionicLoading.hide();
+            // }
           }
-        }
+
+          // var options = {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false};
+          // navigator.geolocation.getCurrentPosition(
+          //   $scope.onPositionFound,
+          //   function(err) {
+          //     options.enableHighAccuracy = true; // force native GPS
+          //     navigator.geolocation.getCurrentPosition(
+          //       $scope.onPositionFound,
+          //       $scope.onPositionError,
+          //       options
+          //     );
+          //   },
+          //   options);
+          }
+
+        // $scope.onPositionFound = function(pos) {
+        //   if ('WEB' == $scope.source) {
+        //     Webservice.example(
+        //       {barang: $scope.selection.item, penjual: $scope.selection.seller, harga: $scope.selection.price, lat: pos.coords.latitude, lng: pos.coords.longitude},
+        //       function(res) {
+        //         alert(JSON.stringify(res));
+        //         $ionicLoading.hide();
+        //       },
+        //       function(err) {
+        //         alert(err);
+        //         $ionicLoading.hide();
+        //       }
+        //     );
+        //   } else if ('SMS' == $scope.source) {
+        //     var phonenumber = Commons.SMSServer();
+        //     var content = 'POSHARGA ' + $scope.selection.item.toUpperCase() + ' ' + $scope.selection.seller.toUpperCase() + ' ' + $scope.selection.price + ' ' + pos.coords.latitude + ' ' + pos.coords.longitude;
+        //     alert(content);
+        //     $ionicLoading.show();
+        //     try {
+        //       $ionicPlatform.ready(function() {
+        //         $cordovaSms
+        //         .send(phonenumber, content)
+        //         .then(function() {
+        //           alert('SMS berhasil dikirim')
+        //           $ionicLoading.hide();
+        //         }, function(error) {
+        //           alert('SMS gagal dikirim: ' + error);
+        //           $ionicLoading.hide();
+        //         });
+        //       });
+        //     } catch(err) {
+        //       alert(err);
+        //       $ionicLoading.hide();
+        //     }
+        //   }
+        // }
 
         $scope.onPositionError = function(err) {
           alert('Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')');
           $ionicLoading.hide();
         }
+
+        $scope.onPositionFound = function(position) {
+          var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          $scope.currentPosition = myLatlng;
+          var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: $scope.map,
+            title: 'Posisi Anda (' + position.coords.latitude + ', ' +  position.coords.longitude + ')'
+          });
+          var infowindow = new google.maps.InfoWindow({
+            content: marker.title
+          }).open($scope.map, marker);
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open($scope.map,marker);
+          });
+          $scope.map.setCenter(myLatlng);
+        }
+
+        $scope.getUserCurrentLocation = function(options) {
+          navigator.geolocation.getCurrentPosition($scope.onPositionFound,
+            function(err) {
+              options.enableHighAccuracy = true; // force to use GPS
+              navigator.geolocation.getCurrentPosition($scope.onPositionFound, $scope.onPositionError, options);
+            },
+            options);
+          }
+
+          $scope.init = function() {
+            $scope.loggedIn = Commons.userInfo().username != null; // TODO call API
+            $scope.map = new google.maps.Map(document.getElementById("map"), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
+            $scope.getUserCurrentLocation(
+              {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
+            );
+          }
+
+          // in case position was not found, try it again on view re-enter
+          $scope.$on('$ionicView.enter', function() {
+            $scope.init();
+          });
+
 
       })
 
