@@ -81,6 +81,7 @@ angular.module('starter.controllers', ['ngCordova'])
   };
   $scope.currentPosition = null;
   $scope.map = null;
+  $scope.markers = [];
 
   $scope.onPositionFound = function(position) {
     var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -133,6 +134,14 @@ angular.module('starter.controllers', ['ngCordova'])
         if ('WEB' == source) {
           var content = {barang: $scope.selection.item, radius: $scope.selection.radius, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
           alert(JSON.stringify(content));
+          // to do dummy
+          $scope.addMarkers([
+            {lat:'-6.919120523384683', lng:'107.61046171188354', price:8000, item:'Bawang merah'},
+            {lat:'-6.913709936771518', lng:'107.61099815368652', price:9000, item:'Bawang merah'},
+            {lat:'-6.916521745423941', lng:'107.61863708496094', price:10000, item:'Bawang merah'},
+            {lat:'-6.919397441504497', lng:'107.62271404266357', price:8500, item:'Bawang merah'}
+          ]);
+
           // $ionicLoading.show();
           // Webservice.example(
           //   content,
@@ -170,6 +179,29 @@ angular.module('starter.controllers', ['ngCordova'])
       }
     }
 
+    $scope.addMarkers = function(locations) {
+      $scope.clearMarkers();
+      for (var i=0;i<locations.length;i++) {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
+          map: $scope.map,
+          icon: 'https://maps.google.com/mapfiles/kml/shapes/shopping.png',
+          title: locations[i].item + ' Rp ' + locations[i].price
+        });
+        var infowindow = new google.maps.InfoWindow({
+          content: marker.title
+        }).open($scope.map, marker);
+        $scope.markers.push(marker);
+      }
+    }
+
+    $scope.clearMarkers = function() {
+      for ( var i = 0; i < $scope.markers.length; i++) {
+        $scope.markers[i].setMap(null);
+      }
+      $scope.markers = [];
+    }
+
   })
 
   .controller('PosHargaCtrl', function($scope, $ionicLoading, $ionicPlatform, Commons, Webservice) {
@@ -204,12 +236,6 @@ angular.module('starter.controllers', ['ngCordova'])
         //     $ionicLoading.hide();
         //   }
         // );
-        $scope.addMarkers([
-          {lat:'-6.919120523384683', lng:'107.61046171188354', price:8000, item:'Bawang merah'},
-          {lat:'-6.913709936771518', lng:'107.61099815368652', price:9000, item:'Bawang merah'},
-          {lat:'-6.916521745423941', lng:'107.61863708496094', price:10000, item:'Bawang merah'},
-          {lat:'-6.919397441504497', lng:'107.62271404266357', price:8500, item:'Bawang merah'}
-        ]);
       } else if ('SMS' == $scope.source) {
         var phonenumber = Commons.SMSServer();
         var content = 'POSHARGA,' + $scope.selection.item.toUpperCase() + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
@@ -345,22 +371,6 @@ angular.module('starter.controllers', ['ngCordova'])
       		}
           $scope.markers = [];
       	}
-
-        $scope.addMarkers = function(locations) {
-          $scope.clearMarkers();
-          for (var i=0;i<locations.length;i++) {
-            var marker = new google.maps.Marker({
-              position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
-              map: $scope.map,
-              icon: 'https://maps.google.com/mapfiles/kml/shapes/shopping.png',
-              title: locations[i].item + ' Rp ' + locations[i].price
-            });
-            var infowindow = new google.maps.InfoWindow({
-              content: marker.title
-            }).open($scope.map, marker);
-            $scope.markers.push(marker);
-          }
-        }
 
         // in case position was not found, try it again on view re-enter
         $scope.$on('$ionicView.enter', function() {
