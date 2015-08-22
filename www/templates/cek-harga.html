@@ -8,10 +8,12 @@
         </select>
       </label>
       <label class="item item-input item-stacked-label">
-        <span class="input-label">Penjual</span>
-        <select ng-model="selection.seller">
-          <option ng-repeat="opt in sellers" value="{{opt.code}}">{{opt.name}}</option>
-        </select>
+        <span class="input-label">Radius (Km)</span>
+        <div class="item range">
+          <i class="icon ion-android-remove"></i>
+          {{selection.radius}} <input type="range" name="radius" ng-model="selection.radius" min="0" max="1000">
+          <i class="icon ion-android-add"></i>
+        </div>
       </label>
     </div>
     <div class="row">

@@ -4,7 +4,10 @@ angular.module('starter.services', [])
 
   var _sms_server = '+14077925761';
   var _api_server = 'http://crosscode.tk/dimana/api';
-  var _userinfo = {};
+  var _userinfo = {
+    mobile: '+6281234567890',
+    username: 'hackathon@gmail.com'
+  };
 
   var _items = [
     {code: 'BAWANG_MERAH', name: 'Bawang merah'},

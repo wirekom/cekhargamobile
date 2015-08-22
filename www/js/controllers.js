@@ -76,13 +76,14 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.sellers = Commons.sellers();
   $scope.selection = {
     item: ($scope.items.length > 0) ? $scope.items[0].code : null,
-    seller: ($scope.sellers.length > 0) ? $scope.sellers[0].code : null
+    seller: ($scope.sellers.length > 0) ? $scope.sellers[0].code : null,
+    radius: 0
   };
   $scope.currentPosition = null;
 
   $scope.onPositionFound = function(position) {
-    $scope.currentPosition = position;
     var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    $scope.currentPosition = myLatlng;
     var marker = new google.maps.Marker({
       position: myLatlng,
       map: $scope.map,
@@ -124,39 +125,42 @@ angular.module('starter.controllers', ['ngCordova'])
 
     $scope.getPrice = function(source) {
       if ($scope.selection.item && $scope.selection.seller) {
-        $ionicLoading.show();
         if ('WEB' == source) {
-          Webservice.example(
-            {barang:$scope.selection.item, penjual:$scope.selection.seller},
-            function(res) {
-              alert(JSON.stringify(res));
-              $ionicLoading.hide();
-            },
-            function(err) {
-              alert(err);
-              $ionicLoading.hide();
-            }
-          );
+          var content = {barang: $scope.selection.item, radius: $scope.selection.radius, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
+          alert(JSON.stringify(content));
+          // $ionicLoading.show();
+          // Webservice.example(
+          //   content,
+          //   function(res) {
+          //     alert(JSON.stringify(res));
+          //     $ionicLoading.hide();
+          //   },
+          //   function(err) {
+          //     alert(err);
+          //     $ionicLoading.hide();
+          //   }
+          // );
         } else if ('SMS' == source) {
           var phonenumber = Commons.SMSServer();
-          var content = 'CEKHARGA ' + $scope.selection.item.toUpperCase() + ' ' + $scope.selection.seller.toUpperCase();
+          var content = 'CEKHARGA,' + $scope.selection.item.toUpperCase() + ',' + $scope.selection.radius + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
           alert(content);
-          try {
-            $ionicPlatform.ready(function() {
-              $cordovaSms
-              .send(phonenumber, content)
-              .then(function() {
-                alert('SMS berhasil dikirim')
-                $ionicLoading.hide();
-              }, function(error) {
-                alert('SMS gagal dikirim: ' + error);
-                $ionicLoading.hide();
-              });
-            });
-          } catch(err) {
-            alert(err);
-            $ionicLoading.hide();
-          }
+          // $ionicLoading.show();
+          // try {
+          //   $ionicPlatform.ready(function() {
+          //     $cordovaSms
+          //     .send(phonenumber, content)
+          //     .then(function() {
+          //       alert('SMS berhasil dikirim')
+          //       $ionicLoading.hide();
+          //     }, function(error) {
+          //       alert('SMS gagal dikirim: ' + error);
+          //       $ionicLoading.hide();
+          //     });
+          //   });
+          // } catch(err) {
+          //   alert(err);
+          //   $ionicLoading.hide();
+          // }
         }
       }
     }
@@ -272,8 +276,8 @@ angular.module('starter.controllers', ['ngCordova'])
       }
 
       $scope.onPositionFound = function(position) {
-        $scope.currentPosition = position;
         var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        $scope.currentPosition = myLatlng;
         var marker = new google.maps.Marker({
           position: myLatlng,
           map: $scope.map,
@@ -469,11 +473,11 @@ angular.module('starter.controllers', ['ngCordova'])
           }
 
           $scope.init = function() {
-            $scope.loggedIn = Commons.userInfo().username != null; // TODO call API
             $scope.map = new google.maps.Map(document.getElementById("map"), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
             $scope.getUserCurrentLocation(
               {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
             );
+            $scope.loggedIn = Commons.userInfo().username != null; // TODO call API
           }
 
           // in case position was not found, try it again on view re-enter
