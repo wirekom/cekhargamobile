@@ -93,6 +93,8 @@ angular.module('starter.controllers', ['ngCordova'])
       item: ($scope.items.length > 0) ? $scope.items[0].id : null,
       radius: 0
     };
+  }).error(function() {
+    $scope.items = Commons.offlineItems();
   });
   $scope.currentPosition = null;
   $scope.map = null;
@@ -157,18 +159,19 @@ angular.module('starter.controllers', ['ngCordova'])
           console.log(JSON.stringify(content));
 
           // to do dummy
-          $scope.addMarkers([
-            {lat:'-6.919120523384683', lng:'107.61046171188354', price:8000, item:'Beras premium'},
-            {lat:'-6.913709936771518', lng:'107.61099815368652', price:9000, item:'Beras premium'},
-            {lat:'-6.916521745423941', lng:'107.61863708496094', price:10000, item:'Beras premium'},
-            {lat:'-6.919397441504497', lng:'107.62271404266357', price:8500, item:'Beras premium'}
-          ]);
+          // $scope.addMarkers([
+          //   {lat:'-6.919120523384683', lng:'107.61046171188354', price:8000, item:'Beras premium'},
+          //   {lat:'-6.913709936771518', lng:'107.61099815368652', price:9000, item:'Beras premium'},
+          //   {lat:'-6.916521745423941', lng:'107.61863708496094', price:10000, item:'Beras premium'},
+          //   {lat:'-6.919397441504497', lng:'107.62271404266357', price:8500, item:'Beras premium'}
+          // ]);
 
           $ionicLoading.show();
           Webservice.hargaall(
             content,
             function(res) {
-              alert(JSON.stringify(res));
+              //alert(JSON.stringify(res));
+              $scope.addMarkers(res);
               $ionicLoading.hide();
             },
             function(err) {
@@ -206,10 +209,10 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.clearMarkers();
       for (var i=0;i<locations.length;i++) {
         var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
+          position: new google.maps.LatLng(locations[i].latitude, locations[i].longitude),
           map: $scope.map,
           icon: 'https://maps.google.com/mapfiles/kml/shapes/shopping.png',
-          title: locations[i].item + ' Rp ' + locations[i].price
+          title: locations[i].barang + ' Rp ' + locations[i].price
         });
         var infowindow = new google.maps.InfoWindow({
           content: marker.title
@@ -235,6 +238,8 @@ angular.module('starter.controllers', ['ngCordova'])
         item: ($scope.items.length > 0) ? $scope.items[0].id : null,
         price: null
       };
+    }).error(function() {
+      $scope.items = Commons.offlineItems();
     });
     $scope.source = null;
     $scope.currentPosition = null;
@@ -415,6 +420,8 @@ angular.module('starter.controllers', ['ngCordova'])
           item: ($scope.items.length > 0) ? $scope.items[0].id : null,
           price: null
         };
+      }).error(function() {
+        $scope.items = Commons.offlineItems();
       });
       $scope.source = null;
       $scope.currentPosition = null;

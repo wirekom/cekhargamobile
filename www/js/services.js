@@ -41,7 +41,7 @@ angular.module('starter.services', [])
       return _userinfo;
     },
     offlineItems: function() {
-      return _items;      
+      return _items;
     },
     items: function() {
       return $http.get('http://23.226.228.133:8090/PantauHarga/api/comodityall.json');
@@ -99,7 +99,7 @@ angular.module('starter.services', [])
 
   this.hargaall = function(data, onSuccess, onError) {
     $http({
-      method: 'GET',
+      method: 'POST',
       url: Commons.APIServer() + '/hargaall.json',
       data: data,
       headers: {
