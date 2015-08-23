@@ -217,7 +217,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
   })
 
-  .controller('PosHargaCtrl', function($scope, $ionicLoading, $ionicPlatform, Commons, Webservice) {
+  .controller('PosHargaCtrl', function($scope, $ionicLoading, $ionicPlatform, $cordovaSms, Commons, Webservice) {
     // set options
     Commons.items().success(function(data) {
       $scope.items = data;
@@ -397,7 +397,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     })
 
-    .controller('JualCtrl', function($scope, $ionicLoading, $ionicPlatform, Commons, Webservice) {
+    .controller('JualCtrl', function($scope, $ionicLoading, $ionicPlatform, $cordovaSms, Commons, Webservice) {
       // set options
       Commons.items().success(function(data) {
         $scope.items = data;
@@ -420,7 +420,7 @@ angular.module('starter.controllers', ['ngCordova'])
               content,
               function(res) {
                 console.log(JSON.stringify(res));
-                alet('Data berhasil dikirim');
+                alert('Data berhasil dikirim');
                 $ionicLoading.hide();
               },
               function(err) {

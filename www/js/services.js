@@ -11,16 +11,30 @@ angular.module('starter.services', [])
   };
 
   var _items = [
-    {code: 'BAWANG_MERAH', name: 'Bawang merah'},
-    {code: 'PISANG_AMBON', name: 'Pisang ambon'},
-    {code: 'APEL_MALANG', name: 'Apel malang'}
-  ]
-
-  var _sellers = [
-    {code: 'PASAR_001', name: 'Pasar 001'},
-    {code: 'SUPERMARKET_002', name: 'Supermarket 002'},
-    {code: 'TOKO_003', name: 'Toko 003'}
-  ]
+  {
+    "id": 8,
+    "name": "Beras Medium"
+  },
+  {
+    "id": 9,
+    "name": "Beras Pera"
+  },
+  {
+    "id": 10,
+    "name": "Beras Premium"
+  },
+  {
+    "id": 15,
+    "name": "Daging Sapi Murni"
+  },
+  {
+    "id": 14,
+    "name": "Daging Sapi Paha Belakang"
+  },
+  {
+    "id": 12,
+    "name": "Gula Pasir"
+  }];
 
   return {
     userInfo: function() {
@@ -29,9 +43,6 @@ angular.module('starter.services', [])
     items: function() {
       //return _items;
       return $http.get('http://23.226.228.133:8090/PantauHarga/api/comodityall.json');
-    },
-    sellers: function() {
-      return _sellers;
     },
     SMSServer: function() {
       return _sms_server;
@@ -96,7 +107,7 @@ angular.module('starter.services', [])
     .success(onSuccess)
     .error(onError);
   }
-  
+
 })
 
 // .factory('Chats', function() {
