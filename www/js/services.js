@@ -5,6 +5,7 @@ angular.module('starter.services', [])
   var _sms_server = '+14077925761';
   var _api_server = 'http://crosscode.tk/dimana/api';
   var _userinfo = {
+    identityNo: '3842740923809482309',
     mobile: '+6281234567890',
     username: 'hackathon@gmail.com'
   };
@@ -27,7 +28,7 @@ angular.module('starter.services', [])
     },
     items: function() {
       //return _items;
-      return $http.get('http://23.226.228.133:8090/PantauHarga/api/comodityall.json');        
+      return $http.get('http://23.226.228.133:8090/PantauHarga/api/comodityall.json');
     },
     sellers: function() {
       return _sellers;

@@ -48,6 +48,13 @@ angular.module('starter.controllers', ['ngCordova'])
    $scope.modal = modal
   })
 
+  $ionicModal.fromTemplateUrl('register-view-modal.html', {
+   scope: $scope,
+   animation: 'slide-in-up'
+  }).then(function(modal) {
+   $scope.viewModal = modal
+  })
+
  $scope.openModal = function() {
    $scope.modal.show()
  }
@@ -59,6 +66,14 @@ angular.module('starter.controllers', ['ngCordova'])
  $scope.register = function() {
    Commons.updateUserInfo($scope.registration);
    $scope.modal.hide();
+ };
+
+ $scope.openViewModal = function() {
+   $scope.viewModal.show();
+ };
+
+ $scope.closeViewModal = function() {
+   $scope.viewModal.hide();
  };
 
  $scope.$on('$destroy', function() {
