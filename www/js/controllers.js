@@ -169,23 +169,23 @@ angular.module('starter.controllers', ['ngCordova'])
           var phonenumber = Commons.SMSServer();
           var content = 'CEKHARGA,' + $scope.selection.item + ',' + $scope.selection.radius + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
           console.log(content);
-          // $ionicLoading.show();
-          // try {
-          //   $ionicPlatform.ready(function() {
-          //     $cordovaSms
-          //     .send(phonenumber, content)
-          //     .then(function() {
-          //       alert('SMS berhasil dikirim')
-          //       $ionicLoading.hide();
-          //     }, function(error) {
-          //       alert('SMS gagal dikirim: ' + error);
-          //       $ionicLoading.hide();
-          //     });
-          //   });
-          // } catch(err) {
-          //   alert(err);
-          //   $ionicLoading.hide();
-          // }
+          $ionicLoading.show();
+          try {
+            $ionicPlatform.ready(function() {
+              $cordovaSms
+              .send(phonenumber, content)
+              .then(function() {
+                alert('SMS berhasil dikirim')
+                $ionicLoading.hide();
+              }, function(error) {
+                alert('SMS gagal dikirim: ' + error);
+                $ionicLoading.hide();
+              });
+            });
+          } catch(err) {
+            alert(err);
+            $ionicLoading.hide();
+          }
         }
       }
     }
@@ -233,41 +233,42 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.sendPrice = function(source) {
       $scope.source = source;
       if ('WEB' == $scope.source) {
-        var content = {barang: $scope.selection.item, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
+        var content = {id: $scope.selection.item, harga: $scope.selection.price, quantity:0, geolocation: $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
         console.log(JSON.stringify(content));
-        // $ionicLoading.show();
-        // Webservice.example(
-        //   content,
-        //   function(res) {
-        //     alert(JSON.stringify(res));
-        //     $ionicLoading.hide();
-        //   },
-        //   function(err) {
-        //     alert(err);
-        //     $ionicLoading.hide();
-        //   }
-        // );
+        $ionicLoading.show();
+        Webservice.input(
+          content,
+          function(res) {
+            console.log(JSON.stringify(res));
+            alet('Data berhasil dikirim');
+            $ionicLoading.hide();
+          },
+          function(err) {
+            alert(err);
+            $ionicLoading.hide();
+          }
+        );
       } else if ('SMS' == $scope.source) {
         var phonenumber = Commons.SMSServer();
         var content = 'POSHARGA,' + $scope.selection.item + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
         console.log(content);
-        // $ionicLoading.show();
-        // try {
-        //   $ionicPlatform.ready(function() {
-        //     $cordovaSms
-        //     .send(phonenumber, content)
-        //     .then(function() {
-        //       alert('SMS berhasil dikirim')
-        //       $ionicLoading.hide();
-        //     }, function(error) {
-        //       alert('SMS gagal dikirim: ' + error);
-        //       $ionicLoading.hide();
-        //     });
-        //   });
-        // } catch(err) {
-        //   alert(err);
-        //   $ionicLoading.hide();
-        // }
+        $ionicLoading.show();
+        try {
+          $ionicPlatform.ready(function() {
+            $cordovaSms
+            .send(phonenumber, content)
+            .then(function() {
+              alert('SMS berhasil dikirim')
+              $ionicLoading.hide();
+            }, function(error) {
+              alert('SMS gagal dikirim: ' + error);
+              $ionicLoading.hide();
+            });
+          });
+        } catch(err) {
+          alert(err);
+          $ionicLoading.hide();
+        }
       }
       //var options = {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false};
       // navigator.geolocation.getCurrentPosition(
@@ -410,41 +411,43 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.sendPrice = function(source) {
           $scope.source = source;
           if ('WEB' == $scope.source) {
-            var content = {barang: $scope.selection.item, qty: $scope.selection.qty, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
+            var content = {id: $scope.selection.item, quantity: $scope.selection.qty, harga: $scope.selection.price, geolocation: $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
             console.log(JSON.stringify(content));
-            // $ionicLoading.show();
-            // Webservice.example(
-            //   content,
-            //   function(res) {
-            //     alert(JSON.stringify(res));
-            //     $ionicLoading.hide();
-            //   },
-            //   function(err) {
-            //     alert(err);
-            //     $ionicLoading.hide();
-            //   }
-            //);
+            $ionicLoading.show();
+            Webservice.input(
+              content,
+              function(res) {
+                console.log(JSON.stringify(res));
+                alet('Data berhasil dikirim');
+                $ionicLoading.hide();
+              },
+              function(err) {
+                alert(err);
+                $ionicLoading.hide();
+              }
+            );
+
           } else if ('SMS' == $scope.source) {
             var phonenumber = Commons.SMSServer();
             var content = 'JUAL,' + $scope.selection.item + ',' + $scope.selection.qty + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
             console.log(content);
-            // $ionicLoading.show();
-            // try {
-            //   $ionicPlatform.ready(function() {
-            //     $cordovaSms
-            //     .send(phonenumber, content)
-            //     .then(function() {
-            //       alert('SMS berhasil dikirim')
-            //       $ionicLoading.hide();
-            //     }, function(error) {
-            //       alert('SMS gagal dikirim: ' + error);
-            //       $ionicLoading.hide();
-            //     });
-            //   });
-            // } catch(err) {
-            //   alert(err);
-            //   $ionicLoading.hide();
-            // }
+            $ionicLoading.show();
+            try {
+              $ionicPlatform.ready(function() {
+                $cordovaSms
+                .send(phonenumber, content)
+                .then(function() {
+                  alert('SMS berhasil dikirim')
+                  $ionicLoading.hide();
+                }, function(error) {
+                  alert('SMS gagal dikirim: ' + error);
+                  $ionicLoading.hide();
+                });
+              });
+            } catch(err) {
+              alert(err);
+              $ionicLoading.hide();
+            }
           }
 
           // var options = {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false};

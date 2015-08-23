@@ -3,7 +3,7 @@ angular.module('starter.services', [])
 .factory('Commons', function($http) {
 
   var _sms_server = '+14077925761';
-  var _api_server = 'http://crosscode.tk/dimana/api';
+  var _api_server = 'http://23.226.228.133:8090/PantauHarga/api';
   var _userinfo = {
     identityNo: '3842740923809482309',
     mobile: '+6281234567890',
@@ -71,18 +71,19 @@ angular.module('starter.services', [])
       return str.join("&");
   }
 
-  this.example = function(data, onSuccess, onError) {
+  this.input = function(data, onSuccess, onError) {
     $http({
       method: 'POST',
-      url: Commons.APIServer() + '/example',
-      data: me.urlencode(data),
+      url: Commons.APIServer() + '/input.json',
+      data: data,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       }
     })
     .success(onSuccess)
     .error(onError);
   }
+
 })
 
 // .factory('Chats', function() {
