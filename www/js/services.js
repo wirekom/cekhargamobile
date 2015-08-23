@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 
-.factory('Commons', function() {
+.factory('Commons', function($http) {
 
   var _sms_server = '+14077925761';
   var _api_server = 'http://crosscode.tk/dimana/api';
@@ -26,7 +26,8 @@ angular.module('starter.services', [])
       return _userinfo;
     },
     items: function() {
-      return _items;
+      //return _items;
+      return $http.get('http://23.226.228.133:8090/PantauHarga/api/comodityall.json');        
     },
     sellers: function() {
       return _sellers;

@@ -72,13 +72,13 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('CekHargaCtrl', function($scope, $ionicLoading, $cordovaSms, $ionicPlatform, Commons, Webservice) {
 
   // set options
-  $scope.items = Commons.items();
-  $scope.sellers = Commons.sellers();
-  $scope.selection = {
-    item: ($scope.items.length > 0) ? $scope.items[0].code : null,
-    seller: ($scope.sellers.length > 0) ? $scope.sellers[0].code : null,
-    radius: 0
-  };
+  Commons.items().success(function(data) {
+    $scope.items = data;
+    $scope.selection = {
+      item: ($scope.items.length > 0) ? $scope.items[0].id : null,
+      radius: 0
+    };
+  });
   $scope.currentPosition = null;
   $scope.map = null;
   $scope.markers = [];
@@ -125,15 +125,11 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.init();
     });
 
-    $scope.$on('$ionicView.leave', function() {
-      $scope.map = null;
-    });
-
     $scope.getPrice = function(source) {
-      if ($scope.selection.item && $scope.selection.seller) {
+      if ($scope.selection.item) {
         if ('WEB' == source) {
           var content = {barang: $scope.selection.item, radius: $scope.selection.radius, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
-          alert(JSON.stringify(content));
+          console.log(JSON.stringify(content));
           // to do dummy
           $scope.addMarkers([
             {lat:'-6.919120523384683', lng:'107.61046171188354', price:8000, item:'Bawang merah'},
@@ -156,8 +152,8 @@ angular.module('starter.controllers', ['ngCordova'])
           // );
         } else if ('SMS' == source) {
           var phonenumber = Commons.SMSServer();
-          var content = 'CEKHARGA,' + $scope.selection.item.toUpperCase() + ',' + $scope.selection.radius + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
-          alert(content);
+          var content = 'CEKHARGA,' + $scope.selection.item + ',' + $scope.selection.radius + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
+          console.log(content);
           // $ionicLoading.show();
           // try {
           //   $ionicPlatform.ready(function() {
@@ -206,13 +202,13 @@ angular.module('starter.controllers', ['ngCordova'])
 
   .controller('PosHargaCtrl', function($scope, $ionicLoading, $ionicPlatform, Commons, Webservice) {
     // set options
-    $scope.items = Commons.items();
-    $scope.sellers = Commons.sellers();
-    $scope.selection = {
-      item: ($scope.items.length > 0) ? $scope.items[0].code : null,
-      seller: ($scope.sellers.length > 0) ? $scope.sellers[0].code : null,
-      price: null
-    };
+    Commons.items().success(function(data) {
+      $scope.items = data;
+      $scope.selection = {
+        item: ($scope.items.length > 0) ? $scope.items[0].id : null,
+        price: null
+      };
+    });
     $scope.source = null;
     $scope.currentPosition = null;
     $scope.markers = [];
@@ -223,7 +219,7 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.source = source;
       if ('WEB' == $scope.source) {
         var content = {barang: $scope.selection.item, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
-        alert(JSON.stringify(content));
+        console.log(JSON.stringify(content));
         // $ionicLoading.show();
         // Webservice.example(
         //   content,
@@ -238,8 +234,8 @@ angular.module('starter.controllers', ['ngCordova'])
         // );
       } else if ('SMS' == $scope.source) {
         var phonenumber = Commons.SMSServer();
-        var content = 'POSHARGA,' + $scope.selection.item.toUpperCase() + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
-        alert(content);
+        var content = 'POSHARGA,' + $scope.selection.item + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
+        console.log(content);
         // $ionicLoading.show();
         // try {
         //   $ionicPlatform.ready(function() {
@@ -385,13 +381,13 @@ angular.module('starter.controllers', ['ngCordova'])
 
     .controller('JualCtrl', function($scope, $ionicLoading, $ionicPlatform, Commons, Webservice) {
       // set options
-      $scope.items = Commons.items();
-      $scope.sellers = Commons.sellers();
-      $scope.selection = {
-        item: ($scope.items.length > 0) ? $scope.items[0].code : null,
-        seller: ($scope.sellers.length > 0) ? $scope.sellers[0].code : null,
-        price: null
-      };
+      Commons.items().success(function(data) {
+        $scope.items = data;
+        $scope.selection = {
+          item: ($scope.items.length > 0) ? $scope.items[0].id : null,
+          price: null
+        };
+      });
       $scope.source = null;
       $scope.currentPosition = null;
       $scope.map = null;
@@ -400,7 +396,7 @@ angular.module('starter.controllers', ['ngCordova'])
           $scope.source = source;
           if ('WEB' == $scope.source) {
             var content = {barang: $scope.selection.item, qty: $scope.selection.qty, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
-            alert(JSON.stringify(content));
+            console.log(JSON.stringify(content));
             // $ionicLoading.show();
             // Webservice.example(
             //   content,
@@ -415,8 +411,8 @@ angular.module('starter.controllers', ['ngCordova'])
             //);
           } else if ('SMS' == $scope.source) {
             var phonenumber = Commons.SMSServer();
-            var content = 'JUAL,' + $scope.selection.item.toUpperCase() + ',' + $scope.selection.qty + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
-            alert(content);
+            var content = 'JUAL,' + $scope.selection.item + ',' + $scope.selection.qty + ',' + $scope.selection.price + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
+            console.log(content);
             // $ionicLoading.show();
             // try {
             //   $ionicPlatform.ready(function() {
