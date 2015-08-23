@@ -143,8 +143,9 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.getPrice = function(source) {
       if ($scope.selection.item) {
         if ('WEB' == source) {
-          var content = {barang: $scope.selection.item, radius: $scope.selection.radius, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), mobile: Commons.userInfo().mobile};
+          var content = {name: $scope.items[$scope.selection.item], radius: $scope.selection.radius, geolocation: $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
           console.log(JSON.stringify(content));
+
           // to do dummy
           $scope.addMarkers([
             {lat:'-6.919120523384683', lng:'107.61046171188354', price:8000, item:'Bawang merah'},
@@ -153,18 +154,19 @@ angular.module('starter.controllers', ['ngCordova'])
             {lat:'-6.919397441504497', lng:'107.62271404266357', price:8500, item:'Bawang merah'}
           ]);
 
-          // $ionicLoading.show();
-          // Webservice.example(
-          //   content,
-          //   function(res) {
-          //     alert(JSON.stringify(res));
-          //     $ionicLoading.hide();
-          //   },
-          //   function(err) {
-          //     alert(err);
-          //     $ionicLoading.hide();
-          //   }
-          // );
+          $ionicLoading.show();
+          Webservice.hargaall(
+            content,
+            function(res) {
+              alert(JSON.stringify(res));
+              $ionicLoading.hide();
+            },
+            function(err) {
+              alert(err);
+              $ionicLoading.hide();
+            }
+          );
+
         } else if ('SMS' == source) {
           var phonenumber = Commons.SMSServer();
           var content = 'CEKHARGA,' + $scope.selection.item + ',' + $scope.selection.radius + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
@@ -240,7 +242,7 @@ angular.module('starter.controllers', ['ngCordova'])
           content,
           function(res) {
             console.log(JSON.stringify(res));
-            alet('Data berhasil dikirim');
+            alert('Data berhasil dikirim');
             $ionicLoading.hide();
           },
           function(err) {

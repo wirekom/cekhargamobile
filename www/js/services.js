@@ -84,6 +84,19 @@ angular.module('starter.services', [])
     .error(onError);
   }
 
+  this.hargaall = function(data, onSuccess, onError) {
+    $http({
+      method: 'GET',
+      url: Commons.APIServer() + '/hargaall.json',
+      data: data,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .success(onSuccess)
+    .error(onError);
+  }
+  
 })
 
 // .factory('Chats', function() {
