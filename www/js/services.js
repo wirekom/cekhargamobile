@@ -40,8 +40,10 @@ angular.module('starter.services', [])
     userInfo: function() {
       return _userinfo;
     },
+    offlineItems: function() {
+      return _items;      
+    },
     items: function() {
-      //return _items;
       return $http.get('http://23.226.228.133:8090/PantauHarga/api/comodityall.json');
     },
     SMSServer: function() {

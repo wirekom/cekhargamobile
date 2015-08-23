@@ -142,16 +142,26 @@ angular.module('starter.controllers', ['ngCordova'])
 
     $scope.getPrice = function(source) {
       if ($scope.selection.item) {
+
+        var name = null;
+        for (var i=0;i<$scope.items.length;i++) {
+          if ($scope.items[i].id == $scope.selection.item) {
+            name = $scope.items[i].name;
+            break;
+          }
+        }
+
         if ('WEB' == source) {
-          var content = {name: $scope.items[$scope.selection.item], radius: $scope.selection.radius, geolocation: $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
+
+          var content = {name: name, radius: $scope.selection.radius, geolocation: $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
           console.log(JSON.stringify(content));
 
           // to do dummy
           $scope.addMarkers([
-            {lat:'-6.919120523384683', lng:'107.61046171188354', price:8000, item:'Bawang merah'},
-            {lat:'-6.913709936771518', lng:'107.61099815368652', price:9000, item:'Bawang merah'},
-            {lat:'-6.916521745423941', lng:'107.61863708496094', price:10000, item:'Bawang merah'},
-            {lat:'-6.919397441504497', lng:'107.62271404266357', price:8500, item:'Bawang merah'}
+            {lat:'-6.919120523384683', lng:'107.61046171188354', price:8000, item:'Beras premium'},
+            {lat:'-6.913709936771518', lng:'107.61099815368652', price:9000, item:'Beras premium'},
+            {lat:'-6.916521745423941', lng:'107.61863708496094', price:10000, item:'Beras premium'},
+            {lat:'-6.919397441504497', lng:'107.62271404266357', price:8500, item:'Beras premium'}
           ]);
 
           $ionicLoading.show();
@@ -169,7 +179,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
         } else if ('SMS' == source) {
           var phonenumber = Commons.SMSServer();
-          var content = 'CEKHARGA,' + $scope.selection.item + ',' + $scope.selection.radius + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
+          var content = 'CEKHARGA,' + $scope.selection.item + ',' + name + ',' + $scope.selection.radius + ',' + $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng();
           console.log(content);
           $ionicLoading.show();
           try {
