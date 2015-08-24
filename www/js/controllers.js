@@ -95,6 +95,10 @@ angular.module('starter.controllers', ['ngCordova'])
     };
   }).error(function() {
     $scope.items = Commons.offlineItems();
+    $scope.selection = {
+      item: ($scope.items.length > 0) ? $scope.items[0].id : null,
+      radius: 0
+    };
   });
   $scope.currentPosition = null;
   $scope.map = null;
@@ -240,6 +244,10 @@ angular.module('starter.controllers', ['ngCordova'])
       };
     }).error(function() {
       $scope.items = Commons.offlineItems();
+      $scope.selection = {
+        item: ($scope.items.length > 0) ? $scope.items[0].id : null,
+        price: null
+      };
     });
     $scope.source = null;
     $scope.currentPosition = null;
@@ -422,6 +430,10 @@ angular.module('starter.controllers', ['ngCordova'])
         };
       }).error(function() {
         $scope.items = Commons.offlineItems();
+        $scope.selection = {
+          item: ($scope.items.length > 0) ? $scope.items[0].id : null,
+          price: null
+        };
       });
       $scope.source = null;
       $scope.currentPosition = null;
