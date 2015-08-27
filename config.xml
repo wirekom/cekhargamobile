@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.cekharga477813" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Cek Harga!</name>
+  <name>Pantau Harga</name>
   <description>
-        Sebuah aplikasi keren
+        Sebuah aplikasi keren pemenang HackathonIstana 2015
     </description>
   <author email="yohanes.gultom@gmail.com" href="mailto:yohanes.gultom@gmail.com">
-      yohanes.gultom@gmail.com
+      CodingStelsel
     </author>
   <content src="index.html"/>
   <access origin="*"/>

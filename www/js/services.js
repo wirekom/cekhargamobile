@@ -3,7 +3,7 @@ angular.module('starter.services', [])
 .factory('Commons', function($http) {
 
   var _sms_server = '+14077925761';
-  var _api_server = 'http://23.226.228.133:8090/PantauHarga/api';
+  var _api_server = 'http://192.168.1.3:18080/PantauHarga/api';
   var _userinfo = {
     identityNo: '3842740923809482309',
     mobile: '+6281234567890',
@@ -44,7 +44,7 @@ angular.module('starter.services', [])
       return _items;
     },
     items: function() {
-      return $http.get('http://23.226.228.133:8090/PantauHarga/api/comodityall.json');
+      return $http.get(_api_server + '/comodityall.json');
     },
     SMSServer: function() {
       return _sms_server;

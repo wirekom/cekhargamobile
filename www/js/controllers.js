@@ -1,25 +1,6 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-// .controller('DashCtrl', function($scope) {})
-//
-// .controller('ChatsCtrl', function($scope, Chats) {
-//   // With the new view caching in Ionic, Controllers are only called
-//   // when they are recreated or on app start, instead of every page change.
-//   // To listen for when this page is active (for example, to refresh data),
-//   // listen for the $ionicView.enter event:
-//   //
-//   //$scope.$on('$ionicView.enter', function(e) {
-//   //});
-//
-//   $scope.chats = Chats.all();
-//   $scope.remove = function(chat) {
-//     Chats.remove(chat);
-//   };
-// })
-//
-// .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-//   $scope.chat = Chats.get($stateParams.chatId);
-// })
+
 
 .controller('AccountCtrl', function($scope, $ionicModal, $ionicLoading, Commons) {
   $scope.registration = {};
@@ -82,8 +63,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 
-/* Cek Harga! */
-
 .controller('CekHargaCtrl', function($scope, $ionicLoading, $cordovaSms, $ionicPlatform, Commons, Webservice) {
 
   // set options
@@ -125,8 +104,11 @@ angular.module('starter.controllers', ['ngCordova'])
     alert('Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')');
   }
 
-  $scope.getUserCurrentLocation = function(options) {
-    navigator.geolocation.getCurrentPosition($scope.onPositionFound,
+  $scope.getUserCurrentLocation = function(options, callback) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      $scope.onPositionFound(position);
+      if (callback) callback();
+    },
       function(err) {
         options.enableHighAccuracy = true; // force to use GPS
         navigator.geolocation.getCurrentPosition($scope.onPositionFound, $scope.onPositionError, options);
@@ -215,7 +197,8 @@ angular.module('starter.controllers', ['ngCordova'])
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(locations[i].latitude, locations[i].longitude),
           map: $scope.map,
-          icon: 'https://maps.google.com/mapfiles/kml/shapes/shopping.png',
+          icon: {url:'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png', scaledSize:new google.maps.Size(40, 40)},
+		  animation: google.maps.Animation.DROP,
           title: locations[i].barang + ' Rp ' + locations[i].price
         });
         var infowindow = new google.maps.InfoWindow({
@@ -295,56 +278,8 @@ angular.module('starter.controllers', ['ngCordova'])
           $ionicLoading.hide();
         }
       }
-      //var options = {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false};
-      // navigator.geolocation.getCurrentPosition(
-      //   $scope.onPositionFound,
-      //   function(err) {
-      //     options.enableHighAccuracy = true; // force native GPS
-      //     navigator.geolocation.getCurrentPosition(
-      //       $scope.onPositionFound,
-      //       $scope.onPositionError,
-      //       options
-      //     );
-      //   },
-      //   options);
-      }
+    }
 
-      // $scope.onPositionFound = function(pos) {
-      //   if ('WEB' == $scope.source) {
-      //     Webservice.example(
-      //       {barang: $scope.selection.item, penjual: $scope.selection.seller, harga: $scope.selection.price, lat: pos.coords.latitude, lng: pos.coords.longitude},
-      //       function(res) {
-      //         alert(JSON.stringify(res));
-      //         $ionicLoading.hide();
-      //       },
-      //       function(err) {
-      //         alert(err);
-      //         $ionicLoading.hide();
-      //       }
-      //     );
-      //   } else if ('SMS' == $scope.source) {
-      //     var phonenumber = Commons.SMSServer();
-      //     var content = 'POSHARGA ' + $scope.selection.item.toUpperCase() + ' ' + $scope.selection.seller.toUpperCase() + ' ' + $scope.selection.price + ' ' + pos.coords.latitude + ' ' + pos.coords.longitude;
-      //     alert(content);
-      //     $ionicLoading.show();
-      //     try {
-      //       $ionicPlatform.ready(function() {
-      //         $cordovaSms
-      //         .send(phonenumber, content)
-      //         .then(function() {
-      //           alert('SMS berhasil dikirim')
-      //           $ionicLoading.hide();
-      //         }, function(error) {
-      //           alert('SMS gagal dikirim: ' + error);
-      //           $ionicLoading.hide();
-      //         });
-      //       });
-      //     } catch(err) {
-      //       alert(err);
-      //       $ionicLoading.hide();
-      //     }
-      //   }
-      // }
 
       $scope.onPositionError = function(err) {
         alert('Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')');
@@ -369,11 +304,12 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.currentMarker = marker;
       }
 
-      $scope.getUserCurrentLocation = function(options) {
+      $scope.getUserCurrentLocation = function(options, callback) {
         navigator.geolocation.getCurrentPosition($scope.onPositionFound,
           function(err) {
             options.enableHighAccuracy = true; // force to use GPS
             navigator.geolocation.getCurrentPosition($scope.onPositionFound, $scope.onPositionError, options);
+            if (callback) callback();
           },
           options);
         }
@@ -384,23 +320,25 @@ angular.module('starter.controllers', ['ngCordova'])
             {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
           );
 
-          // on map click
+          // on map click handler
           google.maps.event.addListener($scope.map, 'mousedown', function(e) {
-            $scope.currentMarker.setMap(null);
-      			$scope.currentMarker = null;
-            $scope.currentPosition = e.latLng;
-            var marker = new google.maps.Marker({
-              position: $scope.currentPosition,
-              map: $scope.map,
-              title: 'Posisi (' + $scope.currentPosition.lat() + ', ' +  $scope.currentPosition.lng() + ')'
-            });
-            var infowindow = new google.maps.InfoWindow({
-              content: marker.title
-            }).open($scope.map, marker);
-            $scope.currentMarker = marker;
-      		});
-        }
+            if ($scope.currentMarker) {
+              $scope.currentMarker.setMap(null);
+              $scope.currentMarker = null;
+              $scope.currentPosition = e.latLng;
+              var marker = new google.maps.Marker({
+                position: $scope.currentPosition,
+                map: $scope.map,
+                title: 'Posisi (' + $scope.currentPosition.lat() + ', ' +  $scope.currentPosition.lng() + ')'
+              });
+              var infowindow = new google.maps.InfoWindow({
+                content: marker.title
+              }).open($scope.map, marker);
+              $scope.currentMarker = marker;
+            }
+          });
 
+        }
 
         $scope.clearMarkers = function() {
       		for ( var i = 0; i < $scope.markers.length; i++) {
