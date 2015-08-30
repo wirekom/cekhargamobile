@@ -3,7 +3,7 @@ angular.module('starter.services', [])
 .factory('Commons', function($http) {
 
   var _sms_server = '+14077925761';
-  var _api_server = 'http://192.168.1.3:18080/PantauHarga/api';
+  var _api_server = 'http://pantauharga.id/api';
   var _userinfo = {
     identityNo: '3842740923809482309',
     mobile: '+6281234567890',
