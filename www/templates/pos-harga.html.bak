@@ -17,7 +17,7 @@
         <button class="button button-block button-positive icon-left ion-earth" ng-disabled="!currentPosition || !selection.item || !selection.price" ng-click="sendPrice('WEB')">Kirim Web</button>
       </div>
       <div class="col">
-        <button class="button button-block button-balanced icon-left ion-chatbox-working" ng-disabled="true || !currentPosition || !selection.item || !selection.price" ng-click="sendPrice('SMS')">Kirim SMS</button>
+        <button class="button button-block button-balanced icon-left ion-chatbox-working" ng-disabled="!currentPosition || !selection.item || !selection.price" ng-click="sendPrice('SMS')">Kirim SMS</button>
       </div>
     </div>
     <div id="map" data-tap-disable="true"></div>

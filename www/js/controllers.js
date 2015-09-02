@@ -1,6 +1,4 @@
-angular.module('starter.controllers', ['ngCordova'])
-
-
+angular.module('starter.controllers', ['ngCordova','ionic'])
 
 .controller('AccountCtrl', function($scope, $ionicModal, $ionicLoading, Commons) {
   $scope.registration = {};
@@ -13,27 +11,27 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.registration = Commons.userInfo();
   }
 
-  $scope.$on('$ionicView.beforeLeave', function() {
-    if ($scope.config.SMSServer != Commons.SMSServer() || $scope.config.APIServer != Commons.APIServer()) {
-      if (confirm('Simpan konfigurasi?')) {
-        Commons.updateSMSServer($scope.config.SMSserver);
-        Commons.updateAPIServer($scope.config.APIServer);
-      }
-    }
-  });
+  // $scope.$on('$ionicView.beforeLeave', function() {
+  //   if ($scope.config.SMSServer != Commons.SMSServer() || $scope.config.APIServer != Commons.APIServer()) {
+  //     if (confirm('Simpan konfigurasi?')) {
+  //       Commons.updateSMSServer($scope.config.SMSserver);
+  //       Commons.updateAPIServer($scope.config.APIServer);
+  //     }
+  //   }
+  // });
 
   $ionicModal.fromTemplateUrl('register-modal.html', {
    scope: $scope,
    animation: 'slide-in-up'
   }).then(function(modal) {
-   $scope.modal = modal
+   $scope.modal = modal;
   })
 
   $ionicModal.fromTemplateUrl('register-view-modal.html', {
    scope: $scope,
    animation: 'slide-in-up'
   }).then(function(modal) {
-   $scope.viewModal = modal
+   $scope.viewModal = modal;
   })
 
  $scope.openModal = function() {
@@ -59,11 +57,12 @@ angular.module('starter.controllers', ['ngCordova'])
 
  $scope.$on('$destroy', function() {
    $scope.modal.remove();
+   $scope.viewModal.remove();
  });
 
 })
 
-.controller('CekHargaCtrl', function($scope, $ionicLoading, $cordovaSms, $ionicPlatform, Commons, Webservice) {
+.controller('CekHargaCtrl', function($scope, $ionicLoading, $cordovaSms, $ionicPlatform, $ionicModal, Commons, Webservice) {
 
   // set options
   Commons.items().success(function(data) {
@@ -82,6 +81,7 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.currentPosition = null;
   $scope.map = null;
   $scope.markers = [];
+  $scope.registration = {};
 
   $scope.onPositionFound = function(position) {
     var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -141,7 +141,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
         if ('WEB' == source) {
 
-          var content = {name: name, radius: $scope.selection.radius, geolocation: $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
+          var content = {name: name, radius: $scope.selection.radius, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
           console.log(JSON.stringify(content));
 
           // to do dummy
@@ -217,7 +217,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
   })
 
-  .controller('PosHargaCtrl', function($scope, $ionicLoading, $ionicPlatform, $cordovaSms, Commons, Webservice) {
+  .controller('PosHargaCtrl', function($scope, $ionicLoading, $ionicPlatform, $ionicPopup, $cordovaSms, Commons, Webservice) {
     // set options
     Commons.items().success(function(data) {
       $scope.items = data;
@@ -241,18 +241,18 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.sendPrice = function(source) {
       $scope.source = source;
       if ('WEB' == $scope.source) {
-        var content = {id: $scope.selection.item, harga: $scope.selection.price, quantity:0, geolocation: $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
+        var content = {id: $scope.selection.item, harga: $scope.selection.price, quantity:0, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
         console.log(JSON.stringify(content));
         $ionicLoading.show();
         Webservice.input(
           content,
           function(res) {
             console.log(JSON.stringify(res));
-            alert('Data berhasil dikirim');
             $ionicLoading.hide();
+            $ionicPopup.alert({title:'Info', template:'Data berhasil dikirim'}).then(function(res) {});
           },
           function(err) {
-            alert(err);
+            $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
             $ionicLoading.hide();
           }
         );
@@ -380,7 +380,7 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.sendPrice = function(source) {
           $scope.source = source;
           if ('WEB' == $scope.source) {
-            var content = {id: $scope.selection.item, quantity: $scope.selection.qty, harga: $scope.selection.price, geolocation: $scope.currentPosition.lat() + ',' + $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
+            var content = {id: $scope.selection.item, quantity: $scope.selection.qty, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
             console.log(JSON.stringify(content));
             $ionicLoading.show();
             Webservice.input(

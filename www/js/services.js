@@ -2,8 +2,11 @@ angular.module('starter.services', [])
 
 .factory('Commons', function($http) {
 
+  var DBNAME = 'pantauharga.db';
+  var _db;
   var _sms_server = '+14077925761';
   var _api_server = 'http://pantauharga.id/api';
+  //var _api_server = 'http://192.168.1.3:18080/PantauHarga/api';
   var _userinfo = {
     identityNo: '3842740923809482309',
     mobile: '+6281234567890',
@@ -69,6 +72,34 @@ angular.module('starter.services', [])
     updateUserInfo: function(userInfo) {
       _userinfo = userInfo;
       return true;
+    },
+    register: function(registration, onSuccess, onError) {
+      $http({
+        method: 'POST',
+        url: _api_server + '/register.json',
+        data: {
+          nama: registration.name,
+          ktp: registration.identityNo,
+          nohp: registration.phone,
+          email: registration.username,
+          username: registration.username,
+          alamat: registration.address,
+          kodepos: registration.postalCode,
+          password: registration.password
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).success(function() {
+        _userinfo = registration;
+        if(onSuccess) onSuccess()
+      })
+      .error(onError);
+      return true;
+    },
+    executeDB: function(query, params) {
+	// TODO
+	  return true;
     }
   }
 
