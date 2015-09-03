@@ -65,17 +65,18 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 .controller('CekHargaCtrl', function($scope, $ionicLoading, $cordovaSms, $ionicPlatform, $ionicModal, Commons, Webservice) {
 
   // set options
+  var DEFAULT_RADIUS = 10;
   Commons.items().success(function(data) {
     $scope.items = data;
     $scope.selection = {
       item: ($scope.items.length > 0) ? $scope.items[0].id : null,
-      radius: 0
+      radius: DEFAULT_RADIUS
     };
   }).error(function() {
     $scope.items = Commons.offlineItems();
     $scope.selection = {
       item: ($scope.items.length > 0) ? $scope.items[0].id : null,
-      radius: 0
+      radius: DEFAULT_RADIUS
     };
   });
   $scope.currentPosition = null;
@@ -121,6 +122,10 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
       $scope.getUserCurrentLocation(
         {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
       );
+      // add map control
+      addMapControl($scope.map, function() {
+        $scope.map.setCenter($scope.currentPosition);
+      });
     }
 
     // in case position was not found, try it again on view re-enter
@@ -234,7 +239,6 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     });
     $scope.source = null;
     $scope.currentPosition = null;
-    $scope.markers = [];
     $scope.currentMarker = null;
     $scope.map = null;
 
@@ -321,7 +325,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
           );
 
           // on map click handler
-          google.maps.event.addListener($scope.map, 'mousedown', function(e) {
+          google.maps.event.addListener($scope.map, 'mouseup', function(e) {
             if ($scope.currentMarker) {
               $scope.currentMarker.setMap(null);
               $scope.currentMarker = null;
@@ -339,13 +343,6 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
           });
 
         }
-
-        $scope.clearMarkers = function() {
-      		for ( var i = 0; i < $scope.markers.length; i++) {
-      			$scope.markers[i].setMap(null);
-      		}
-          $scope.markers = [];
-      	}
 
         // in case position was not found, try it again on view re-enter
         $scope.$on('$ionicView.enter', function() {
@@ -508,6 +505,12 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
               {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
             );
             $scope.loggedIn = Commons.userInfo().username != null; // TODO call API
+
+            // add map control
+            addMapControl($scope.map, function() {
+              $scope.map.setCenter($scope.currentPosition);
+            });
+
           }
 
           // in case position was not found, try it again on view re-enter
@@ -522,3 +525,20 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
       })
 
     ;
+
+    // add control to google map
+    function addMapControl(map, onClick) {
+      var buttonId = 'center-button';
+      var title = 'My location';
+      var centerButton = document.getElementById(buttonId);
+      if (map && !centerButton) {
+        var controlUI = document.createElement('button');
+        controlUI.id = buttonId;
+        controlUI.className = 'button icon ion-android-radio-button-on';
+        controlUI.index = 1;
+        controlUI.title = title;
+        controlUI.style.marginTop = '15px';
+        controlUI.addEventListener('click', onClick);
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlUI);
+      }
+    }
