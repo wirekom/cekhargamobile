@@ -20,7 +20,11 @@
     "cordova-plugin-splashscreen",
     "com.ionic.keyboard",
     "cordova-plugin-whitelist",
-    "cordova-plugin-geolocation"
+    "cordova-plugin-geolocation",
+    {
+      "locator": "https://github.com/oneminutedistraction/phonenumber.git",
+      "id": "at.oneminutedistraction.phonenumber"
+    }
   ],
   "cordovaPlatforms": [
     "android",

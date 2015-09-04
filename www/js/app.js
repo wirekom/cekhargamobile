@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, Commons, LocalStorage) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,6 +18,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
+    }
+    // cek user info in localstorage
+    var userInfo = LocalStorage.getObject('userInfo');
+    try {
+      if ((!userInfo || !userInfo.mobile) && window.plugins.phonenumber) {
+        window.plugins.phonenumber.get(function(res) {
+          if (!userInfo) {
+            userInfo = {mobile: res};
+          } else {
+            userInfo.mobile = res;
+          }
+          LocalStorage.setObject('userInfo', userInfo);
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      LocalStorage.setObject('userInfo', {});
     }
   });
 })
