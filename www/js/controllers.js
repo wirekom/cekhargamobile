@@ -199,15 +199,17 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     $scope.addMarkers = function(locations) {
       $scope.clearMarkers();
       for (var i=0;i<locations.length;i++) {
+        //locations[i].nohp = '+628130000000';
+        var markerTitle = '<div>' + locations[i].barang + '</div><div>Rp ' + numeral(locations[i].price).format('0,0.00') + '</div>';
+        if (locations[i].nohp && locations[i].nohp.length > 5) markerTitle += '<div>Telp: ' + locations[i].nohp + '</div>';
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(locations[i].latitude, locations[i].longitude),
           map: $scope.map,
           icon: {url:'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png', scaledSize:new google.maps.Size(40, 40)},
-		  animation: google.maps.Animation.DROP,
-          title: locations[i].barang + ' Rp ' + locations[i].price
+		  animation: google.maps.Animation.DROP
         });
         var infowindow = new google.maps.InfoWindow({
-          content: marker.title
+          content: markerTitle
         }).open($scope.map, marker);
         $scope.markers.push(marker);
       }
