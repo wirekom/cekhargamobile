@@ -142,6 +142,19 @@ angular.module('starter.services', [])
     .error(onError);
   }
 
+  this.register = function(data, onSuccess, onError) {
+    $http({
+      method: 'POST',
+      url: Commons.APIServer() + '/register.json',
+      data: data,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .success(onSuccess)
+    .error(onError);
+  }
+
 })
 
 .factory('LocalStorage', ['$window', function($window) {

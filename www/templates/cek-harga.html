@@ -1,7 +1,7 @@
 <ion-view view-title="Cek Harga" ng-init="init()" cache-view="false">
   <ion-content>
     <div class="list">
-      <label class="item item-input item-stacked-label">
+      <label class="item item-input item-select">
         <span class="input-label">Barang</span>
         <select ng-model="selection.item">
           <option ng-repeat="opt in items" value="{{opt.id}}">{{opt.name}}</option>
@@ -10,11 +10,11 @@
       <label class="item item-input item-stacked-label">
         <span class="input-label">Radius (Km)</span>
       </label>
-    </div>
-    <div class="item range">
-      <i class="icon ion-android-remove"></i>
-      {{selection.radius}} <input type="range" name="radius" ng-model="selection.radius" min="0" max="1000">
-      <i class="icon ion-android-add"></i>
+      <div class="item range range-assertive">
+        <i class="icon ion-android-remove"></i>
+        {{selection.radius}} <input type="range" name="radius" ng-model="selection.radius" min="0" max="1000">
+        <i class="icon ion-android-add"></i>
+      </div>
     </div>
     <div class="row">
       <div class="col">

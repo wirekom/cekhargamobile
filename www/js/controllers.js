@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova','ionic'])
 
-.controller('AccountCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, Commons, LocalStorage) {
+.controller('AccountCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, Commons, LocalStorage, Webservice) {
   $scope.registration = {};
   $scope.config = {
     SMSServer: Commons.SMSServer(),
@@ -43,11 +43,27 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
  $scope.register = function() {
    // validate
    if ($scope.registration.password != $scope.registration.passwordConfirm) {
-     $ionicPopup.alert({title:'Error', template:'Kata sandi tidak sama'}).then(function(res) {});
+     $ionicPopup.alert({title:'Data tidak valid', template:'Kata sandi tidak sama'}).then(function(res) {});
      return false;
    }
-   LocalStorage.setObject('userInfo', $scope.registration);
-   $scope.modal.hide();
+   $ionicLoading.show();
+   Webservice.register({
+     username: $scope.registration.username,
+     email: $scope.registration.username,
+     password: $scope.registration.password,
+     ktp: $scope.registration.identityNo,
+     nama: $scope.registration.name,
+     nohp: $scope.registration.mobile,
+     alamat: $scope.registration.address,
+     kodepos: $scope.registration.postalCode
+   }, function(res) {
+     LocalStorage.setObject('userInfo', $scope.registration);
+     $scope.modal.hide();
+     $ionicLoading.hide();
+   }, function(err) {
+     $ionicPopup.alert({title:'Registrasi gagal', template:err}).then(function(res) {});
+     $ionicLoading.hide();
+   });
  }
 
  $scope.openViewModal = function() {
@@ -165,7 +181,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
               $ionicLoading.hide();
             },
             function(err) {
-              $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
+              $ionicPopup.alert({title:'Data gagal diunduh', template:err}).then(function(res) {});
               //alert(err);
               $ionicLoading.hide();
             }
@@ -181,17 +197,17 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
               $cordovaSms
               .send(phonenumber, content)
               .then(function() {
-                $ionicPopup.alert({title:'Info', template:'SMS berhasil dikirim. Cek info harga dalam SMS balasan'}).then(function(res) {});
+                $ionicPopup.alert({title:'SMS berhasil dikirim', template:'SMS berhasil dikirim. SMS balasan berisi info harga sedang dikirim'}).then(function(res) {});
                 //alert('SMS berhasil dikirim')
                 $ionicLoading.hide();
               }, function(err) {
-                $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
+                $ionicPopup.alert({title:'Pengiriman SMS gagal', template:err}).then(function(res) {});
                 // alert('SMS gagal dikirim: ' + err);
                 $ionicLoading.hide();
               });
             });
           } catch(err) {
-            $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
+            $ionicPopup.alert({title:'Pengiriman SMS gagal', template:err}).then(function(res) {});
             //alert(err);
             $ionicLoading.hide();
           }
@@ -258,10 +274,10 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
           function(res) {
             console.log(JSON.stringify(res));
             $ionicLoading.hide();
-            $ionicPopup.alert({title:'Info', template:'Data berhasil dikirim'}).then(function(res) {});
+            $ionicPopup.alert({title:'Data berhasil diunggah', template:'Data berhasil diunggah. Terimakasih atas partisipasi Anda memantau harga!'}).then(function(res) {});
           },
           function(err) {
-            $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
+            $ionicPopup.alert({title:'Data gagal diunggah', template:err}).then(function(res) {});
             $ionicLoading.hide();
           }
         );
@@ -275,17 +291,17 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
             $cordovaSms
             .send(phonenumber, content)
             .then(function() {
-              $ionicPopup.alert({title:'Info', template:'SMS berhasil dikirim'}).then(function(res) {});
+              $ionicPopup.alert({title:'SMS berhasil dikirim', template:'SMS berhasil dikirim. Terimakasih atas partisipasi Anda memantau harga!'}).then(function(res) {});
               //alert('SMS berhasil dikirim')
               $ionicLoading.hide();
             }, function(err) {
-              $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
+              $ionicPopup.alert({title:'SMS gagal dikirim', template:err}).then(function(res) {});
               //alert('SMS gagal dikirim: ' + err);
               $ionicLoading.hide();
             });
           });
         } catch(err) {
-          $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
+          $ionicPopup.alert({title:'SMS gagal dikirim', template:err}).then(function(res) {});
           //alert(err);
           $ionicLoading.hide();
         }
@@ -294,7 +310,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
 
       $scope.onPositionError = function(err) {
-        $ionicPopup.alert({title:'Error', template:'Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')'}).then(function(res) {});
+        $ionicPopup.alert({title:'Lokasi gagal dideteksi', template:'Lokasi gagal dideteksi. Pastikan Anda mendapat sinyal GPS atau GSM dan restart aplikasi ini'}).then(function(res) {});
         //alert('Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')');
         $ionicLoading.hide();
       }
@@ -393,12 +409,12 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
               content,
               function(res) {
                 console.log(JSON.stringify(res));
-                $ionicPopup.alert({title:'Info', template:'Data berhasil dikirim'}).then(function(res) {});
+                $ionicPopup.alert({title:'Data berhasil diunggah', template:'Data berhasil diunggal. Terimakasih atas partisipasi Anda!'}).then(function(res) {});
                 //alert('Data berhasil dikirim');
                 $ionicLoading.hide();
               },
               function(err) {
-                $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
+                $ionicPopup.alert({title:'Data gagal diunggah', template:err}).then(function(res) {});
                 //alert(err);
                 $ionicLoading.hide();
               }
@@ -414,17 +430,17 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
                 $cordovaSms
                 .send(phonenumber, content)
                 .then(function() {
-                  $ionicPopup.alert({title:'Info', template:'SMS berhasil dikirim'}).then(function(res) {});
+                  $ionicPopup.alert({title:'SMS berhasil dikirim', template:'SMS berhasil dikirim. Terimakasih atas partisipasi Anda!'}).then(function(res) {});
                   //alert('SMS berhasil dikirim')
                   $ionicLoading.hide();
                 }, function(error) {
-                  $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
+                  $ionicPopup.alert({title:'SMS gagal dikirim', template:err}).then(function(res) {});
                   //alert('SMS gagal dikirim: ' + error);
                   $ionicLoading.hide();
                 });
               });
             } catch(err) {
-              $ionicPopup.alert({title:'Error', template:err}).then(function(res) {});
+              $ionicPopup.alert({title:'SMS gagal dikirim', template:err}).then(function(res) {});
               //alert(err);
               $ionicLoading.hide();
             }
@@ -433,7 +449,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
         }
 
         $scope.onPositionError = function(err) {
-          $ionicPopup.alert({title:'Error', template:'Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')'}).then(function(res) {});
+          $ionicPopup.alert({title:'Lokasi tidak berhasil dideteksi', template:'Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')'}).then(function(res) {});
           //alert('Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')');
           $ionicLoading.hide();
         }
@@ -500,7 +516,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
       if (map && !centerButton) {
         var controlUI = document.createElement('button');
         controlUI.id = buttonId;
-        controlUI.className = 'button icon ion-android-radio-button-on';
+        controlUI.className = 'button button-calm icon ion-android-radio-button-on';
         controlUI.index = 1;
         controlUI.title = title;
         controlUI.style.marginTop = '15px';

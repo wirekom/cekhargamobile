@@ -1,7 +1,7 @@
 <ion-view view-title="Pos harga" ng-init="init()" cache-view="false">
   <ion-content>
     <div class="list">
-      <label class="item item-input item-stacked-label">
+      <label class="item item-input item-select">
         <span class="input-label">Barang</span>
         <select ng-model="selection.item">
           <option ng-repeat="opt in items" value="{{opt.id}}">{{opt.name}}</option>
