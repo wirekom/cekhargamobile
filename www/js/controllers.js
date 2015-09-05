@@ -58,6 +58,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
      kodepos: $scope.registration.postalCode
    }, function(res) {
      LocalStorage.setObject('userInfo', $scope.registration);
+     $ionicPopup.alert({title:'Registrasi berhasil!', template:'Registrasi berhasil. Sekarang Anda dapat menggunakan menu Jual Komoditi.'}).then(function(res) {});
      $scope.modal.hide();
      $ionicLoading.hide();
    }, function(err) {
