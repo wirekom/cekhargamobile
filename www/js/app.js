@@ -39,7 +39,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+
+  // set tabs to bottom
+  //$ionicConfigProvider.tabs.position('bottom');
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -53,37 +56,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
-
-  // Each tab has its own nav history stack:
-
-  // .state('tab.dash', {
-  //   url: '/dash',
-  //   views: {
-  //     'tab-dash': {
-  //       templateUrl: 'templates/tab-dash.html',
-  //       controller: 'DashCtrl'
-  //     }
-  //   }
-  // })
-  //
-  // .state('tab.chats', {
-  //     url: '/chats',
-  //     views: {
-  //       'tab-chats': {
-  //         templateUrl: 'templates/tab-chats.html',
-  //         controller: 'ChatsCtrl'
-  //       }
-  //     }
-  //   })
-  //   .state('tab.chat-detail', {
-  //     url: '/chats/:chatId',
-  //     views: {
-  //       'tab-chats': {
-  //         templateUrl: 'templates/chat-detail.html',
-  //         controller: 'ChatDetailCtrl'
-  //       }
-  //     }
-  //   })
 
   /* Cek harga! */
 
