@@ -9,6 +9,10 @@ Deskripsi lebih lengkap bisa di lihat di website [Code4Nation.org](https://code4
 
 2.Ionic framework http://ionicframework.com
 
+3.Android SDK https://developer.android.com/sdk/index.html
+
+4.Browser extension untuk mengizinkan Cross Origin Resource Sharing (CORS) seperti [Allow-Control-Origin:*](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?utm_source=chrome-app-launcher-info-dialog) untuk Google Chrome (untuk integrasi dengan webservice API)
+
 # Setup
 1.Install semua dependency
 
@@ -16,6 +20,6 @@ Deskripsi lebih lengkap bisa di lihat di website [Code4Nation.org](https://code4
 
 3.Masuk ke direktori repo dan jalankan perintah `ionic state restore`
 
-4.Jalankan perintah `ionic serve` untuk menjalankan di Google Chrome
+4.Jalankan perintah `ionic serve` untuk menjalankan di Google Chrome (plugins yang mengakses hardware tidak akan berfungsi)
 
 5.Jalankan perintah `ionic run android` untuk menjalankan di Android device atau emulator
