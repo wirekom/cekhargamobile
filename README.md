@@ -11,6 +11,8 @@ Deskripsi lebih lengkap bisa di lihat di website [Code4Nation.org](https://code4
 
 3.Android SDK https://developer.android.com/sdk/index.html
 
+4.Browser extension untuk mengizinkan Cross Origin Resource Sharing (CORS) seperti [Allow-Control-Origin:*](https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?utm_source=chrome-app-launcher-info-dialog) untuk Google Chrome (untuk integrasi dengan webservice API)
+
 # Setup
 1.Install semua dependency
 
