@@ -351,7 +351,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
           );
 
           // on map click handler
-          google.maps.event.addListener($scope.map, 'mouseup', function(e) {
+          google.maps.event.addListener($scope.map, 'mousedown', function(e) {
             if ($scope.currentMarker) {
               $scope.currentMarker.setMap(null);
               $scope.currentMarker = null;
