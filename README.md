@@ -9,7 +9,7 @@ Deskripsi lebih lengkap bisa di lihat di website [Code4Nation.org](https://code4
 
 2.Ionic framework http://ionicframework.com
 
-3. Android SDK https://developer.android.com/sdk/index.html
+3.Android SDK https://developer.android.com/sdk/index.html
 
 # Setup
 1.Install semua dependency
