@@ -9,6 +9,8 @@ Deskripsi lebih lengkap bisa di lihat di website [Code4Nation.org](https://code4
 
 2.Ionic framework http://ionicframework.com
 
+3. Android SDK https://developer.android.com/sdk/index.html
+
 # Setup
 1.Install semua dependency
 
@@ -16,6 +18,6 @@ Deskripsi lebih lengkap bisa di lihat di website [Code4Nation.org](https://code4
 
 3.Masuk ke direktori repo dan jalankan perintah `ionic state restore`
 
-4.Jalankan perintah `ionic serve` untuk menjalankan di Google Chrome
+4.Jalankan perintah `ionic serve` untuk menjalankan di Google Chrome (plugins yang mengakses hardware tidak akan berfungsi)
 
 5.Jalankan perintah `ionic run android` untuk menjalankan di Android device atau emulator
