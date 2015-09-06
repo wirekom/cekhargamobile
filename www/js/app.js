@@ -30,6 +30,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             userInfo.mobile = res;
           }
           LocalStorage.setObject('userInfo', userInfo);
+        }, function() {
+          throw 'Number is not available';
         });
       }
     } catch (err) {

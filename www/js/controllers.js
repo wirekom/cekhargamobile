@@ -77,7 +77,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
 })
 
-.controller('CekHargaCtrl', function($scope, $ionicLoading, $cordovaSms, $ionicPlatform, $ionicModal, Commons, Webservice) {
+.controller('CekHargaCtrl', function($scope, $state, $ionicLoading, $cordovaSms, $ionicPlatform, $ionicModal, $ionicPopup, Commons, Webservice) {
 
   // set options
   var DEFAULT_RADIUS = 10;
@@ -162,6 +162,9 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
         if ('WEB' == source) {
 
+          // handle undetected number
+          if(isUndetectedNumber(Commons.userInfo().mobile, $ionicPopup, $state)) return false;
+
           var content = {name: name, radius: $scope.selection.radius, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
           console.log(JSON.stringify(content));
 
@@ -244,7 +247,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
   })
 
-  .controller('PosHargaCtrl', function($scope, $ionicLoading, $ionicPlatform, $ionicPopup, $cordovaSms, Commons, Webservice) {
+  .controller('PosHargaCtrl', function($scope, $state, $ionicLoading, $ionicPlatform, $ionicPopup, $cordovaSms, Commons, Webservice) {
     // set options
     Commons.items().success(function(data) {
       $scope.items = data;
@@ -267,6 +270,8 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     $scope.sendPrice = function(source) {
       $scope.source = source;
       if ('WEB' == $scope.source) {
+        // handle undetected number
+        if(isUndetectedNumber(Commons.userInfo().mobile, $ionicPopup, $state)) return false;
         var content = {id: $scope.selection.item, harga: $scope.selection.price, quantity:0, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
         console.log(JSON.stringify(content));
         $ionicLoading.show();
@@ -381,7 +386,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
     })
 
-    .controller('JualCtrl', function($scope, $ionicLoading, $ionicPlatform, $ionicPopup, $cordovaSms, Commons, Webservice) {
+    .controller('JualCtrl', function($scope, $state, $ionicLoading, $ionicPlatform, $ionicPopup, $cordovaSms, Commons, Webservice) {
       // set options
       Commons.items().success(function(data) {
         $scope.items = data;
@@ -403,6 +408,8 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
       $scope.sendPrice = function(source) {
           $scope.source = source;
           if ('WEB' == $scope.source) {
+            // handle undetected number
+            if(isUndetectedNumber(Commons.userInfo().mobile, $ionicPopup, $state)) return false;
             var content = {id: $scope.selection.item, quantity: $scope.selection.qty, harga: $scope.selection.price, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
             console.log(JSON.stringify(content));
             $ionicLoading.show();
@@ -523,5 +530,18 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
         controlUI.style.marginTop = '15px';
         controlUI.addEventListener('click', onClick);
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlUI);
+      }
+    }
+
+    // handle undetected number
+    function isUndetectedNumber(mobile, ionicPopup, state) {
+      if (!mobile) {
+        ionicPopup.alert({title:'Nomor tidak terdeteksi', template:'Nomor tidak terdeteksi. Silahkan lakukan registrasi lebih dulu.'})
+          .then(function(res) {
+            state.go('tab.account');
+          });
+        return true;
+      } else {
+        return false;
       }
     }
