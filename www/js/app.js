@@ -91,6 +91,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
 
+  .state('tab.nlp', {
+    url: '/nlp',
+    views: {
+      'tab-nlp': {
+        templateUrl: 'templates/nlp.html',
+        controller: 'NlpCtrl'
+      }
+    }
+  })
+
   .state('tab.jual', {
     url: '/jual',
     views: {
