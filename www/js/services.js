@@ -7,6 +7,7 @@ angular.module('starter.services', [])
 
   var _sms_server = '+14077925761';
   var _api_server = 'http://pantauharga.id/api';
+  var _python_server = 'http://pantauharga.id:5000';
   // var _api_server = 'http://192.168.1.3:18080/PantauHarga/api';
   // var _userinfo = {
   //   identityNo: '3842740923809482309',
@@ -55,6 +56,9 @@ angular.module('starter.services', [])
     },
     APIServer: function() {
       return _api_server;
+    },
+    PythonServer: function() {
+      return _python_server;
     },
     updateSMSServer: function(newVal) {
       if (_sms_server != newVal) {
@@ -133,6 +137,19 @@ angular.module('starter.services', [])
     $http({
       method: 'POST',
       url: Commons.APIServer() + '/hargaall.json',
+      data: data,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .success(onSuccess)
+    .error(onError);
+  }
+
+  this.nlparse = function(data, onSuccess, onError) {
+    $http({
+      method: 'POST',
+      url: Commons.PythonServer() + '/nlparse.json',
       data: data,
       headers: {
         'Content-Type': 'application/json'

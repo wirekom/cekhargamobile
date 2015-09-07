@@ -40,3 +40,25 @@
 .scroll {
   height: 100%;
 }
+
+#nlp-input {
+	width: 100%;
+}
+
+.nlp-result.header.col {
+    background-color: #d3d3d3;
+}
+
+.nlp-result.col {
+    border: solid 1px gray;
+    border-bottom-style: none;
+    border-right-style: none;
+}
+
+.nlp-result.col:last-child {
+    border-right: solid 1px gray;
+}
+
+.nlp-result.row:last-child .col {
+    border-bottom: solid 1px gray;
+}

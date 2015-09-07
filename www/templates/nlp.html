@@ -1,0 +1,30 @@
+<ion-view view-title="NLP" ng-init="init()" cache-view="false">
+  <ion-content>
+    <div class="list">
+    </div>
+    <div class="row">
+      <div class="col">
+        <textarea id="nlp-input" rows="5" ng-model="selection.input"
+        placeholder="Contoh: Beras medium 10000 per liter bawang merah sepuluh ribu sekilo"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button class="button button-block button-positive icon-left ion-ios-pulse" ng-click="parse()">Parse</button>
+      </div>
+      <div class="col">
+        <button class="button button-block" ng-click="clear()">Clear</button>
+      </div>
+    </div>
+    <div class="nlp-result header row" ng-show="selection.result">
+      <div class="nlp-result header col">Komoditas</div>
+      <div class="nlp-result header col">Jumlah</div>
+      <div class="nlp-result header col">Harga</div>
+    </div>
+    <div class="nlp-result row" ng-repeat="x in selection.result">
+      <div class="nlp-result col">{{ x.name }}</div>
+      <div class="nlp-result col">{{ x.amount }}</div>
+      <div class="nlp-result col">{{ x.price }}</div>
+    </div>
+  </ion-content>
+</ion-view>

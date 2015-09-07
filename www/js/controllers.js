@@ -507,6 +507,33 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
       })
 
+    .controller('NlpCtrl', function($scope, $ionicLoading, $ionicPlatform, $ionicPopup, $cordovaSms, Commons, Webservice) {
+      $scope.clear = function() {
+        $scope.selection = {
+          input: '',
+          result: null
+        };
+      };
+      $scope.clear();
+      $scope.parse = function(){
+        $ionicLoading.show();
+        Webservice.nlparse(
+          {
+            input: $scope.selection.input
+          },
+          function(res) {
+            console.log(JSON.stringify(res));
+            $ionicLoading.hide();
+            $scope.selection.result = res;
+          },
+          function(err) {
+            $ionicPopup.alert({title:'Data gagal diunggah', template:err}).then(function(res) {});
+            $ionicLoading.hide();
+          }
+        );
+      };
+     })
+
     ;
 
     // add control to google map
