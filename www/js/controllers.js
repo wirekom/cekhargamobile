@@ -21,9 +21,17 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
    $scope.viewModal = modal;
  });
 
+ $ionicModal.fromTemplateUrl('about-modal.html', {
+  scope: $scope,
+  animation: 'slide-in-up'
+ }).then(function(modal) {
+  $scope.aboutModal = modal;
+});
+
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
     $scope.viewModal.remove();
+    $scope.aboutModal.remove();
   });
 
 
@@ -74,6 +82,15 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
  $scope.closeViewModal = function() {
    $scope.viewModal.hide();
  }
+
+ $scope.openAboutModal = function() {
+   $scope.aboutModal.show();
+ }
+
+ $scope.closeAboutModal = function() {
+   $scope.aboutModal.hide();
+ }
+
 
 })
 

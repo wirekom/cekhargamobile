@@ -12,15 +12,16 @@
         <input type="text" placeholder="https://rest.api.com" ng-model="config.APIServer" disabled />
       </label>
 
-      <label class="item item-input item-stacked-label">
+      <div class="item item-input item-stacked-label">
         <span class="input-label">No telepon</span>
         <input type="text" ng-model="registration.mobile" disabled />
-      </label>
+      </div>
 
-      <label class="item item-input item-stacked-label">
+      <div class="item item-input item-stacked-label">
         <button class="button button-positive icon-left ion-person" ng-if="registration.username != null" ng-click="openViewModal()">{{registration.username}}</button>
         <button class="button button-positive icon-left ion-person" ng-if="!registration.username" ng-click="openModal()">Registrasi</button>
-      </label>
+        <button class="button button-assertive icon-left ion-information-circled" ng-click="openAboutModal()">Tentang</button>
+      </div>
 
     </div>
 
@@ -69,10 +70,10 @@
       </div>
       <div class="row">
         <div class="col">
-          <button class="button button-block button-positive icon-left ion-person" ng-disabled="!registration.name || !registration.identityNo || !registration.mobile || !registration.username || !registration.address || !registration.postalCode || !registration.password || !registration.passwordConfirm" ng-click="register()">Register</button>
+          <button class="button button-block button-positive icon-left ion-person" ng-disabled="!registration.name || !registration.identityNo || !registration.mobile || !registration.username || !registration.address || !registration.postalCode || !registration.password || !registration.passwordConfirm" ng-click="register()">Daftar</button>
         </div>
         <div class="col">
-          <button class="button button-block button-assertive icon-left ion-close" ng-click="closeModal()">Cancel</button>
+          <button class="button button-block button-assertive icon-left ion-close" ng-click="closeModal()">Batal</button>
         </div>
       </div>
     </ion-content>
@@ -111,7 +112,40 @@
           <span>{{registration.postalCode}}</span>
         </label>
       </div>
-      <button class="button button-block button-positive icon-left ion-person" ng-click="closeViewModal()">Close</button>
+      <button class="button button-block button-positive icon-left ion-close" ng-click="closeViewModal()">OK</button>
+    </ion-content>
+  </div>
+</script>
+
+<script id="about-modal.html" type="text/ng-template">
+  <div class="modal">
+    <ion-header-bar>
+      <h1 class="title">Tentang</h1>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+        <div class="item">
+          <h1>Pantau Harga v 1.0</h1>
+          <p>Dibuat oleh tim CodingStelsel @ Code4Nation.org:</p>
+        </div>
+        <a class="item" href="mailto:ivan.sugiarto@gmail.com">
+          <h2>Ivan Sugiarto Widodo (ivan.sugiarto@gmail.com)</h2>
+          <p>Web developer</p>
+        </a>
+        <a class="item" href="mailto:panduwana@gmail.com">
+          <h2>Ronny Perdana (panduwana@gmail.com)</h2>
+          <p>SMS gateway developer</p>
+        </a>
+        <a class="item" href="mailto:wid.pangestu@gmail.com">
+          <h2>Widodo Pangestu (wid.pangestu@gmail.com)</h2>
+          <p>Web developer</p>
+        </a>
+        <a class="item" href="mailto:yohanes.gultom@gmail.com">
+          <h2>Yohanes Gultom (yohanes.gultom@gmail.com)</h2>
+          <p>Mobile (android) developer</p>
+        </a>
+      </div>
+      <button class="button button-block button-positive icon-left ion-close" ng-click="closeAboutModal()">OK</button>
     </ion-content>
   </div>
 </script>
