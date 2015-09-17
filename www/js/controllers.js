@@ -122,7 +122,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     var marker = new google.maps.Marker({
       position: myLatlng,
       map: $scope.map,
-      title: 'Posisi Anda (' + position.coords.latitude + ', ' +  position.coords.longitude + ')'
+      title: 'Posisi Anda'
     });
     var infowindow = new google.maps.InfoWindow({
       content: marker.title
@@ -240,7 +240,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
       $scope.clearMarkers();
       for (var i=0;i<locations.length;i++) {
         //locations[i].nohp = '+628130000000';
-        var markerTitle = '<div>' + locations[i].barang + '</div><div>Rp ' + numeral(locations[i].price).format('0,0.00') + '</div>';
+        var markerTitle = '<div>' + locations[i].barang + '</div><div>Rp ' + numeral(locations[i].price).format('0,0.00') + '/Kg</div>';
         if (locations[i].nohp && locations[i].nohp.length > 5) markerTitle += '<div>Telp: ' + locations[i].nohp + '</div>';
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(locations[i].latitude, locations[i].longitude),
@@ -344,7 +344,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
         var marker = new google.maps.Marker({
           position: myLatlng,
           map: $scope.map,
-          title: 'Posisi Anda (' + position.coords.latitude + ', ' +  position.coords.longitude + ')'
+          title: 'Posisi Anda'
         });
         var infowindow = new google.maps.InfoWindow({
           content: marker.title
@@ -485,7 +485,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
           var marker = new google.maps.Marker({
             position: myLatlng,
             map: $scope.map,
-            title: 'Posisi Anda (' + position.coords.latitude + ', ' +  position.coords.longitude + ')'
+            title: 'Posisi Anda'
           });
           var infowindow = new google.maps.InfoWindow({
             content: marker.title
