@@ -77,34 +77,6 @@ angular.module('starter.services', [])
     updateUserInfo: function(userInfo) {
       LocalStorage.setObject(USERINFO_KEY, userInfo);
       return true;
-    },
-    register: function(registration, onSuccess, onError) {
-      $http({
-        method: 'POST',
-        url: _api_server + '/register.json',
-        data: {
-          nama: registration.name,
-          ktp: registration.identityNo,
-          nohp: registration.phone,
-          email: registration.username,
-          username: registration.username,
-          alamat: registration.address,
-          kodepos: registration.postalCode,
-          password: registration.password
-        },
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).success(function() {
-        _userinfo = registration;
-        if(onSuccess) onSuccess()
-      })
-      .error(onError);
-      return true;
-    },
-    executeDB: function(query, params) {
-	// TODO
-	  return true;
     }
   }
 
@@ -171,6 +143,24 @@ angular.module('starter.services', [])
     .success(onSuccess)
     .error(onError);
   }
+
+  this.login = function(login, onSuccess, onError) {
+    $http({
+      method: 'POST',
+      url: Commons.APIServer() + '/login.json',
+      data: {
+        username: login.username,
+        password: login.password
+      },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .success(onSuccess)
+    .error(onError);
+    return true;
+  }
+
 
 })
 
