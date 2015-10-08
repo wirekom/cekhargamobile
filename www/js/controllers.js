@@ -134,7 +134,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
   }
 
   $scope.onPositionError = function(err) {
-    $ionicPopup.alert({title:'Error', template:'Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')'}).then(function(res) {});
+    $ionicPopup.alert({title:'Error', template:'Lokasi tidak berhasil dideteksi. Silahkan pastikan GPS Anda aktif'}).then(function(res) {});
     //alert('Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')');
   }
 
@@ -153,18 +153,13 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     $scope.init = function() {
       $scope.map = new google.maps.Map(document.getElementById('map'), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
       $scope.getUserCurrentLocation(
-        {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
+        {maximumAge: 30000, timeout: 5000, enableHighAccuracy: false}
       );
       // add map control
       addMapControl($scope.map, function() {
         $scope.map.setCenter($scope.currentPosition);
       });
     }
-
-    // in case position was not found, try it again on view re-enter
-    $scope.$on('$ionicView.enter', function() {
-      $scope.init();
-    });
 
     $scope.getPrice = function(source) {
       if ($scope.selection.item) {
@@ -180,9 +175,10 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
         if ('WEB' == source) {
 
           // handle undetected number
-          if(isUndetectedNumber(Commons.userInfo().mobile, $ionicPopup, $state)) return false;
+          //if(isUndetectedNumber(Commons.userInfo().mobile, $ionicPopup, $state)) return false;
 
-          var content = {name: name, radius: $scope.selection.radius, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
+          //var content = {name: name, radius: $scope.selection.radius, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng(), nohp: Commons.userInfo().mobile};
+          var content = {name: name, radius: $scope.selection.radius, lat: $scope.currentPosition.lat(), lng: $scope.currentPosition.lng()};
           console.log(JSON.stringify(content));
 
           // to do dummy
@@ -239,7 +235,6 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     $scope.addMarkers = function(locations) {
       $scope.clearMarkers();
       for (var i=0;i<locations.length;i++) {
-        //locations[i].nohp = '+628130000000';
         var markerTitle = '<div>' + locations[i].barang + '</div><div>Rp ' + numeral(locations[i].price).format('0,0.00') + '/Kg</div>';
         if (locations[i].nohp && locations[i].nohp.length > 5) markerTitle += '<div>Telp: ' + locations[i].nohp + '</div>';
         var marker = new google.maps.Marker({
@@ -261,6 +256,10 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
       }
       $scope.markers = [];
     }
+
+    $scope.$on('$ionicView.enter', function(){
+      $scope.init();
+    });
 
   })
 
@@ -333,7 +332,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
 
       $scope.onPositionError = function(err) {
-        $ionicPopup.alert({title:'Lokasi gagal dideteksi', template:'Lokasi gagal dideteksi. Pastikan Anda mendapat sinyal GPS atau GSM dan restart aplikasi ini'}).then(function(res) {});
+        $ionicPopup.alert({title:'Lokasi gagal dideteksi', template:'Lokasi tidak berhasil dideteksi. Silahkan pastikan GPS Anda aktif'}).then(function(res) {});
         //alert('Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')');
         $ionicLoading.hide();
       }
@@ -369,7 +368,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
         $scope.init = function() {
           $scope.map = new google.maps.Map(document.getElementById('map'), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
           $scope.getUserCurrentLocation(
-            {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
+            {maximumAge: 30000, timeout: 5000, enableHighAccuracy: false}
           );
 
           // on map click handler
@@ -392,13 +391,8 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
         }
 
-        // in case position was not found, try it again on view re-enter
-        $scope.$on('$ionicView.enter', function() {
+        $scope.$on('$ionicView.enter', function(){
           $scope.init();
-        });
-
-        $scope.$on('$ionicView.leave', function() {
-          $scope.map = null;
         });
 
     })
@@ -474,7 +468,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
         }
 
         $scope.onPositionError = function(err) {
-          $ionicPopup.alert({title:'Lokasi tidak berhasil dideteksi', template:'Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')'}).then(function(res) {});
+          $ionicPopup.alert({title:'Lokasi tidak berhasil dideteksi', template:'Lokasi tidak berhasil dideteksi. Silahkan pastikan GPS Anda aktif'}).then(function(res) {});
           //alert('Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')');
           $ionicLoading.hide();
         }
@@ -509,7 +503,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
             $scope.map = new google.maps.Map(document.getElementById('map'), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
             $scope.getUserCurrentLocation(
-              {maximumAge: 30000, timeout: 20000, enableHighAccuracy: false}
+              {maximumAge: 30000, timeout: 5000, enableHighAccuracy: false}
             );
             $scope.loggedIn = Commons.userInfo().username != null; // TODO call API
 
@@ -520,13 +514,8 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
           }
 
-          // in case position was not found, try it again on view re-enter
-          $scope.$on('$ionicView.enter', function() {
+          $scope.$on('$ionicView.enter', function(){
             $scope.init();
-          });
-
-          $scope.$on('$ionicView.leave', function() {
-            $scope.map = null;
           });
 
       })

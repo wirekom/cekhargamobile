@@ -2,7 +2,7 @@
   <ion-content>
     <div class="list">
 
-      <label class="item item-input item-stacked-label">
+      <!-- <label class="item item-input item-stacked-label">
         <span class="input-label">SMS Server</span>
         <input type="text" placeholder="+14077925761" ng-model="config.SMSServer" disabled />
       </label>
@@ -15,12 +15,15 @@
       <div class="item item-input item-stacked-label">
         <span class="input-label">No telepon</span>
         <input type="text" ng-model="registration.mobile" disabled />
+      </div> -->
+
+      <div class="item">
+        <button class="button button-block button-positive icon-left ion-person" ng-if="registration.username != null" ng-click="openViewModal()">{{registration.username}}</button>
+        <button class="button button-block button-positive icon-left ion-person" ng-if="!registration.username" ng-click="openModal()">Registrasi</button>
       </div>
 
-      <div class="item item-input item-stacked-label">
-        <button class="button button-positive icon-left ion-person" ng-if="registration.username != null" ng-click="openViewModal()">{{registration.username}}</button>
-        <button class="button button-positive icon-left ion-person" ng-if="!registration.username" ng-click="openModal()">Registrasi</button>
-        <button class="button button-assertive icon-left ion-information-circled" ng-click="openAboutModal()">Tentang</button>
+      <div class="item">
+        <button class="button button-block button-assertive icon-left ion-information-circled" ng-click="openAboutModal()">Tentang</button>
       </div>
 
     </div>
@@ -36,41 +39,41 @@
     <ion-content>
       <div class="list">
         <label class="item item-input">
-          <span class="input-label">Nama lengkap</span>
+          <span class="input-label">Nama<span class="required-mark"> * </span></span>
           <input type="text" ng-model="registration.name" placeholder="Budi" required>
         </label>
         <label class="item item-input">
           <span class="input-label">No KTP</span>
-          <input type="text" ng-model="registration.identityNo" placeholder="390810932943243" required>
+          <input type="text" ng-model="registration.identityNo" placeholder="390810932943243">
         </label>
         <label class="item item-input">
-          <span class="input-label">No HP</span>
+          <span class="input-label">No HP<span class="required-mark"> * </span></span>
           <input type="text" ng-model="registration.mobile" ng-readonly="registration.mobileAvailable" placeholder="+6281311525264" required>
         </label>
         <label class="item item-input">
-          <span class="input-label">Email</span>
+          <span class="input-label">Email<span class="required-mark"> * </span></span>
           <input type="email" ng-model="registration.username" placeholder="budi@gmail.com" required>
         </label>
         <label class="item item-input">
           <span class="input-label">Alamat</span>
-          <input type="text" ng-model="registration.address" placeholder="Jl. Merdeka no 13 Jakarta" required>
+          <input type="text" ng-model="registration.address" placeholder="Jl. Merdeka no 13 Jakarta">
         </label>
         <label class="item item-input">
           <span class="input-label">Kode pos</span>
-          <input type="text" ng-model="registration.postalCode" placeholder="13330" required>
+          <input type="text" ng-model="registration.postalCode" placeholder="13330">
         </label>
         <label class="item item-input">
-          <span class="input-label">Kata sandi</span>
+          <span class="input-label">Kata sandi<span class="required-mark"> * </span></span>
           <input type="password" ng-model="registration.password" required>
         </label>
         <label class="item item-input">
-          <span class="input-label">Konfirmasi kata sandi</span>
+          <span class="input-label">Konfirmasi kata sandi<span class="required-mark"> * </span</span>
           <input type="password" ng-model="registration.passwordConfirm" required>
         </label>
       </div>
       <div class="row">
         <div class="col">
-          <button class="button button-block button-positive icon-left ion-person" ng-disabled="!registration.name || !registration.identityNo || !registration.mobile || !registration.username || !registration.address || !registration.postalCode || !registration.password || !registration.passwordConfirm" ng-click="register()">Daftar</button>
+          <button class="button button-block button-positive icon-left ion-person" ng-disabled="!registration.name || !registration.mobile || !registration.username || !registration.password || !registration.passwordConfirm" ng-click="register()">Daftar</button>
         </div>
         <div class="col">
           <button class="button button-block button-assertive icon-left ion-close" ng-click="closeModal()">Batal</button>
@@ -126,6 +129,7 @@
       <div class="list">
         <div class="item">
           <h1>Pantau Harga v 1.0</h1>
+          <p>Facebook Page: <a href="https://www.facebook.com/pantauharga">facebook.com/pantauharga</a></p>
           <p>Dibuat oleh tim CodingStelsel @ Code4Nation.org:</p>
         </div>
         <a class="item" href="mailto:ivan.sugiarto@gmail.com">

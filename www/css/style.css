@@ -62,3 +62,8 @@
 .nlp-result.row:last-child .col {
     border-bottom: solid 1px gray;
 }
+
+.required-mark {
+	color:red;
+	font-weight: bold;
+}
