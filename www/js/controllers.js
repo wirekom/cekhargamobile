@@ -1,6 +1,7 @@
 angular.module('starter.controllers', ['ngCordova','ionic'])
 
 .controller('AccountCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, Commons, LocalStorage, Webservice) {
+  $scope.userInfo = {};
   $scope.registration = {};
   $scope.config = {
     SMSServer: Commons.SMSServer(),
@@ -43,8 +44,8 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
   });
 
   $scope.init = function() {
-    $scope.registration = LocalStorage.getObject('userInfo');
-    $scope.registration.mobileAvailable = ($scope.registration && $scope.registration.mobile && $scope.registration.mobile.length > 0);
+    $scope.userInfo = LocalStorage.getObject('userInfo');
+    $scope.userInfo.mobileAvailable = ($scope.registration && $scope.registration.mobile && $scope.registration.mobile.length > 0);
   }
 
   $scope.openModal = function() {
@@ -73,6 +74,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
       kodepos: $scope.registration.postalCode
     }, function(res) {
       LocalStorage.setObject('userInfo', $scope.registration);
+      $scope.userInfo = $scope.registration;
       $ionicPopup.alert({title:'Registrasi berhasil!', template:'Registrasi berhasil. Sekarang Anda dapat menggunakan menu Jual Komoditi.'}).then(function(res) {});
       $scope.modal.hide();
       $ionicLoading.hide();
@@ -105,13 +107,13 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
       username: $scope.login.username,
       password: $scope.login.password
     }, function(res) {
-      $scope.registration.username = res.username;
-      $scope.registration.identityNo = res.ktp;
-      $scope.registration.name = res.nama;
-      $scope.registration.mobile = res.nohp;
-      $scope.registration.address = res.alamat;
-      $scope.registration.postalCode = res.kodepos;
-      LocalStorage.setObject('userInfo', $scope.registration);
+      $scope.userInfo.username = res.username;
+      $scope.userInfo.identityNo = res.ktp;
+      $scope.userInfo.name = res.nama;
+      $scope.userInfo.mobile = res.nohp;
+      $scope.userInfo.address = res.alamat;
+      $scope.userInfo.postalCode = res.kodepos;
+      LocalStorage.setObject('userInfo', $scope.userInfo);
       $ionicPopup.alert({title:'Login berhasil!', template:'Selamat datang kembali, ' + res.nama + ' ! '}).then(function(res) {});
       $scope.loginModal.hide();
       $ionicLoading.hide();
@@ -128,6 +130,19 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
   $scope.closeLoginModal = function() {
     $scope.loginModal.hide();
+  }
+
+  $scope.logout = function() {
+    $ionicPopup.confirm({
+     title: 'Logout',
+     template: 'Logout dari akun ' + $scope.userInfo.username + '?'
+   }).then(function(res) {
+     if(res) {
+       $scope.userInfo = {};
+       $scope.registration = {};
+       LocalStorage.setObject('userInfo', null);
+     }
+   });
   }
 
 })

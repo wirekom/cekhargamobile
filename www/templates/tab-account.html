@@ -17,13 +17,14 @@
         <input type="text" ng-model="registration.mobile" disabled />
       </div> -->
 
-      <div class="item" ng-if="!registration.username">
-        <button class="button button-block button-balanced icon-left ion-power" ng-click="openLoginModal()">Login</button>
+      <div class="item">
+        <button class="button button-block button-balanced icon-left ion-power" ng-if="userInfo.username != null" ng-click="logout()">Logout</button>
+        <button class="button button-block button-balanced icon-left ion-power" ng-if="!userInfo.username" ng-click="openLoginModal()">Login</button>
       </div>
 
       <div class="item">
-        <button class="button button-block button-positive icon-left ion-person" ng-if="registration.username != null" ng-click="openViewModal()">{{registration.username}}</button>
-        <button class="button button-block button-positive icon-left ion-person" ng-if="!registration.username" ng-click="openModal()">Registrasi</button>
+        <button class="button button-block button-positive icon-left ion-person" ng-if="userInfo.username != null" ng-click="openViewModal()">{{userInfo.username}}</button>
+        <button class="button button-block button-positive icon-left ion-person" ng-if="!userInfo.username" ng-click="openModal()">Registrasi</button>
       </div>
 
       <div class="item">
@@ -96,27 +97,27 @@
       <div class="list">
         <label class="item item-input">
           <span class="input-label">Nama lengkap</span>
-          <span>{{registration.name}}</span>
+          <span>{{userInfo.name}}</span>
         </label>
         <label class="item item-input">
           <span class="input-label">No KTP</span>
-          <span>{{registration.identityNo}}</span>
+          <span>{{userInfo.identityNo}}</span>
         </label>
         <label class="item item-input">
           <span class="input-label">No HP</span>
-          <span>{{registration.mobile}}</span>
+          <span>{{userInfo.mobile}}</span>
         </label>
         <label class="item item-input">
           <span class="input-label">Email</span>
-          <span>{{registration.username}}</span>
+          <span>{{userInfo.username}}</span>
         </label>
         <label class="item item-input">
           <span class="input-label">Alamat</span>
-          <div>{{registration.address}}</div>
+          <div>{{userInfo.address}}</div>
         </label>
         <label class="item item-input">
           <span class="input-label">Kode pos</span>
-          <span>{{registration.postalCode}}</span>
+          <span>{{userInfo.postalCode}}</span>
         </label>
       </div>
       <button class="button button-block button-positive icon-left ion-close" ng-click="closeViewModal()">OK</button>
