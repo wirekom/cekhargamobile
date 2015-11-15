@@ -288,12 +288,14 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
   $scope.addMarkers = function(locations) {
     $scope.clearMarkers();
     for (var i=0;i<locations.length;i++) {
+      var lastUpdated = new Date(Date.parse(locations[i].lastUpdated));
       var markerTitle = '<div>' + locations[i].barang + '</div><div>Rp ' + numeral(locations[i].price).format('0,0.00') + '/Kg</div>';
       if (locations[i].nohp && locations[i].nohp.length > 5) markerTitle += '<div>Telp: ' + locations[i].nohp + '</div>';
+      markerTitle += '<div>' + dateFormat(lastUpdated) +  '</div>';
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(locations[i].latitude, locations[i].longitude),
         map: $scope.map,
-        icon: {url:'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png', scaledSize:new google.maps.Size(40, 40)},
+        icon: {url:'img/grn-circle.png', scaledSize:new google.maps.Size(40, 40)},
         animation: google.maps.Animation.DROP
       });
       var infowindow = new google.maps.InfoWindow({
@@ -310,9 +312,9 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     $scope.markers = [];
   }
 
-  $scope.$on('$ionicView.enter', function(){
-    $scope.init();
-  });
+  // $scope.$on('$ionicView.enter', function(){
+  //   $scope.init();
+  // });
 
 })
 
@@ -383,11 +385,10 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     }
   }
 
-
   $scope.onPositionError = function(err) {
-    $ionicPopup.alert({title:'Lokasi gagal dideteksi', template:'Lokasi tidak berhasil dideteksi. Silahkan pastikan GPS Anda aktif'}).then(function(res) {});
-    //alert('Lokasi tidak berhasil dideteksi : ' + err.message + ' (' + err.code + ')');
-    $ionicLoading.hide();
+    console.log('posHarga:onPositionError');
+    $ionicPopup.alert({title:'Error', template:'Lokasi tidak berhasil dideteksi. Silahkan pastikan GPS Anda aktif'}).then(function(res) {});
+    // $ionicLoading.hide();
   }
 
   $scope.onPositionFound = function(position) {
@@ -409,6 +410,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
   }
 
   $scope.getUserCurrentLocation = function(options, callback) {
+    console.log('posHarga:getUserCurrentLocation');
     navigator.geolocation.getCurrentPosition($scope.onPositionFound,
       function(err) {
         options.enableHighAccuracy = true; // force to use GPS
@@ -419,6 +421,7 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     }
 
     $scope.init = function() {
+      console.log('posHarga:init');
       $scope.map = new google.maps.Map(document.getElementById('map'), {zoom: 16,mapTypeId: google.maps.MapTypeId.ROADMAP});
       $scope.getUserCurrentLocation(
         {maximumAge: 30000, timeout: 5000, enableHighAccuracy: false}
@@ -444,9 +447,9 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
     }
 
-    $scope.$on('$ionicView.enter', function(){
-      $scope.init();
-    });
+    // $scope.$on('$ionicView.enter', function(){
+    //   $scope.init();
+    // });
 
   })
 
@@ -567,9 +570,9 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
       }
 
-      $scope.$on('$ionicView.enter', function(){
-        $scope.init();
-      });
+    //   $scope.$on('$ionicView.enter', function(){
+    //     $scope.init();
+    //   });
 
     })
 
@@ -630,4 +633,10 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
       } else {
         return false;
       }
+    }
+
+    // get indonesian-formatted date
+    function dateFormat(date) {
+        var months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des' ];
+        return date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + ' ' + date.toLocaleTimeString();
     }

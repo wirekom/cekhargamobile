@@ -8,111 +8,123 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
 
 .run(function($ionicPlatform, Commons, LocalStorage) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleLightContent();
-    }
-    // cek user info in localstorage
-    var userInfo = LocalStorage.getObject('userInfo');
-    try {
-      if ((!userInfo || !userInfo.mobile) && window.plugins.phonenumber) {
-        window.plugins.phonenumber.get(function(res) {
-          if (!userInfo) {
-            userInfo = {mobile: res};
-          } else {
-            userInfo.mobile = res;
-          }
-          LocalStorage.setObject('userInfo', userInfo);
-        }, function() {
-          throw 'Number is not available';
-        });
-      }
-    } catch (err) {
-      console.error(err);
-      LocalStorage.setObject('userInfo', {});
-    }
-  });
+    $ionicPlatform.ready(function() {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+            cordova.plugins.Keyboard.disableScroll(true);
+        }
+        if (window.StatusBar) {
+            // org.apache.cordova.statusbar required
+            StatusBar.styleLightContent();
+        }
+        // adMob
+        if(AdMob) {
+            var admobid = {};
+            if(ionic.Platform.isAndroid()) {
+                admobid = { banner: 'ca-app-pub-6777103193634702/3516511225' };
+                AdMob.createBanner({
+                    adId:admobid.banner,
+                    position:AdMob.AD_POSITION.BOTTOM_CENTER,
+                    autoShow:true
+                });
+            }
+        }
+        // cek user info in localstorage
+        var userInfo = LocalStorage.getObject('userInfo');
+        try {
+            if ((!userInfo || !userInfo.mobile) && window.plugins.phonenumber) {
+                window.plugins.phonenumber.get(function(res) {
+                    if (!userInfo) {
+                        userInfo = {mobile: res};
+                    } else {
+                        userInfo.mobile = res;
+                    }
+                    LocalStorage.setObject('userInfo', userInfo);
+                }, function() {
+                    throw 'Number is not available';
+                });
+            }
+        } catch (err) {
+            console.error(err);
+            LocalStorage.setObject('userInfo', {});
+        }
+    });
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
-  // set tabs to bottom
-  //$ionicConfigProvider.tabs.position('bottom');
+    // set tabs to bottom
+    //$ionicConfigProvider.tabs.position('bottom');
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
-  $stateProvider
+    // Ionic uses AngularUI Router which uses the concept of states
+    // Learn more here: https://github.com/angular-ui/ui-router
+    // Set up the various states which the app can be in.
+    // Each state's controller can be found in controllers.js
+    $stateProvider
 
-  // setup an abstract state for the tabs directive
-  .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
+    // setup an abstract state for the tabs directive
+    .state('tab', {
+        url: '/tab',
+        abstract: true,
+        templateUrl: 'templates/tabs.html'
+    })
 
-  /* Cek harga! */
+    /* Cek harga! */
 
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  })
+    .state('tab.account', {
+        url: '/account',
+        views: {
+            'tab-account': {
+                templateUrl: 'templates/tab-account.html',
+                controller: 'AccountCtrl'
+            }
+        }
+    })
 
-  .state('tab.cek-harga', {
-    url: '/cek-harga',
-    views: {
-      'tab-cek-harga': {
-        templateUrl: 'templates/cek-harga.html',
-        controller: 'CekHargaCtrl'
-      }
-    }
-  })
+    .state('tab.cek-harga', {
+        url: '/cek-harga',
+        views: {
+            'tab-cek-harga': {
+                templateUrl: 'templates/cek-harga.html',
+                controller: 'CekHargaCtrl'
+            }
+        }
+    })
 
-  .state('tab.pos-harga', {
-    url: '/pos-harga',
-    views: {
-      'tab-pos-harga': {
-        templateUrl: 'templates/pos-harga.html',
-        controller: 'PosHargaCtrl'
-      }
-    }
-  })
+    .state('tab.pos-harga', {
+        url: '/pos-harga',
+        views: {
+            'tab-pos-harga': {
+                templateUrl: 'templates/pos-harga.html',
+                controller: 'PosHargaCtrl'
+            }
+        }
+    })
 
-  .state('tab.nlp', {
-    url: '/nlp',
-    views: {
-      'tab-nlp': {
-        templateUrl: 'templates/nlp.html',
-        controller: 'NlpCtrl'
-      }
-    }
-  })
+    .state('tab.nlp', {
+        url: '/nlp',
+        views: {
+            'tab-nlp': {
+                templateUrl: 'templates/nlp.html',
+                controller: 'NlpCtrl'
+            }
+        }
+    })
 
-  .state('tab.jual', {
-    url: '/jual',
-    views: {
-      'tab-jual': {
-        templateUrl: 'templates/tab-jual.html',
-        controller: 'JualCtrl'
-      }
-    }
-  })
-  ;
+    .state('tab.jual', {
+        url: '/jual',
+        views: {
+            'tab-jual': {
+                templateUrl: 'templates/tab-jual.html',
+                controller: 'JualCtrl'
+            }
+        }
+    })
+    ;
 
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/cek-harga');
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('/tab/cek-harga');
 
 });

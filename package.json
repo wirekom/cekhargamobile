@@ -24,7 +24,8 @@
     {
       "locator": "https://github.com/oneminutedistraction/phonenumber.git",
       "id": "at.oneminutedistraction.phonenumber"
-    }
+    },
+    "cordova-plugin-admobpro"
   ],
   "cordovaPlatforms": [
     "android",
