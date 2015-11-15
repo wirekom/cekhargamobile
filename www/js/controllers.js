@@ -312,9 +312,9 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
     $scope.markers = [];
   }
 
-  // $scope.$on('$ionicView.enter', function(){
-  //   $scope.init();
-  // });
+  $scope.$on('$ionicView.enter', function(){
+    $scope.init();
+  });
 
 })
 
@@ -436,7 +436,8 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
           var marker = new google.maps.Marker({
             position: $scope.currentPosition,
             map: $scope.map,
-            title: 'Posisi (' + $scope.currentPosition.lat() + ', ' +  $scope.currentPosition.lng() + ')'
+            title: 'Posisi Anda'
+            //title: 'Posisi (' + $scope.currentPosition.lat() + ', ' +  $scope.currentPosition.lng() + ')'
           });
           var infowindow = new google.maps.InfoWindow({
             content: marker.title
@@ -447,9 +448,9 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
     }
 
-    // $scope.$on('$ionicView.enter', function(){
-    //   $scope.init();
-    // });
+    $scope.$on('$ionicView.enter', function(){
+      $scope.init();
+    });
 
   })
 
@@ -570,9 +571,9 @@ angular.module('starter.controllers', ['ngCordova','ionic'])
 
       }
 
-    //   $scope.$on('$ionicView.enter', function(){
-    //     $scope.init();
-    //   });
+      $scope.$on('$ionicView.enter', function(){
+        $scope.init();
+      });
 
     })
 
